@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+    <!--https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js-->
+    <script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+    <script th:src="@{/js/jquery-1.12.4.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script th:src="@{/js/face.js}"></script>
+    <script th:src="@{/js/liaotian.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/face.css}">
+</head>
+<style>
+    .liaotian{
+        margin: 0 auto;
+        margin-top: 6px;
+        height: 650px;
+        width: 900px;
+        border: 1px solid black;
+    }
+    .cebian{
+        float: right;
+        height: 100%;
+        width: 14%;
+        border: 1px solid ;
+        color: ;
+        background-color: #999999;
+    }
+    .inputbox{
+        width: 86%;
+        height: 156px;
+        position: relative;
+        left: 0px;
+        bottom: 0px;
+        background-color: #999999;
+    }
+    .liaotcontent{
+        border: 1px solid black;
+        display: block;
+        width: 100%;
+        padding: 5px;
+        resize:none;
+    }
+    .layui-btn{
+        height: 34px;
+        line-height: 34px;
+    }
+    .Chatarea{
+        overflow-y: scroll;
+        background-color: #434343;
+        height: 76%;
+        width: 86%;
+    }
+    /*滚动条样式*/
+    .Chatarea::-webkit-scrollbar{
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .Chatarea::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #535353;
+    }
+    .Chatarea::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        background: #EDEDED;
+    }
+    .record li{
+        display: block;
+        margin-top: 12px;
+        padding: 8px;
+    }
+    .record li .ji01{
+        float: left;
+        display: block;
+        background-color: #b8d45c;
+        padding: 10px;
+        border-radius: 10px;
+        margin-left: 54px;
+        margin-right: 44px;
+        margin-bottom: 14px;
+        clear:both;
+    }
+    .record li .ji02{
+        float:right;
+        display: block;
+        background-color: #fcfcfc;
+        padding: 10px;
+        border-radius: 10px;
+        margin-right: 60px;
+        margin-top: 10px;
+        margin-left: 44px;
+        margin-bottom: 14px;
+        clear:both;
+    }
+    .record li .jiimg01{
+        float: left;
+        margin-left: -20px;
+        margin-top: -12px;
+    }
+    .record li .jiimg02{
+        float: right;
+        margin-right: -20px;
+        margin-top: -12px;
+    }
+    #connecta{
+        position: relative;
+        left: 506px;
+        font-size: 16px;
+        margin-top: 6px;
+    }
+    #senda{
+        position: relative;
+        left: 540px;
+        margin-top: -4px;
+    }
+
+    .record li .tishi{
+        float: left;
+        display: block;
+        position: relative;
+        left: 36%;
+        margin: 0 auto;
+        color: #999999;
+        clear:both;
+        font-size: 16px;
+    }
+    .record li .tishi span{
+        color: #2e6da4;
+    }
+
+    #disconnecta{
+        position: relative;
+        left: 526px;
+        margin-top: -4px;
+    }
+    #connecta{
+        margin-left: -70px;
+        margin-top: -4px;
+    }
+    #message{
+        display: inline-block;
+        bottom: 2px;
+        margin-top: -20px;
+    }
+    .toux01{
+        float: left;
+        position: relative;
+        top: 42px;
+        right: 4px;
+    }
+    .toux02{
+        float: right;
+        position: relative;
+        top: 50px;
+        left: 8px;
+    }
+    .x01{
+        float: left;
+        clear: both;
+        margin-bottom: -14px;
+        margin-top: -14px;
+    }
+    .x02{
+        float: right;
+        clear: both;
+        margin-bottom: -18px;
+        margin-top: -18px;
+    }
+    .cebian ul li{
+        display: block;
+        margin-bottom: 6px;
+    }
+    .cebian ul li span{
+        display: inline-block;
+        margin-left: -6px;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+</style>
+<body>
+<div th:class="liaotian">
+    <input type="hidden" value="123" th:class="yanzhenge">
+    <div th:class="cebian">
+        <ul th:class="cebianlist">
+        </ul>
+    </div>
+    <div th:class="Chatarea">
+        <ul th:class="record">
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技铸造性能持铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技久性智能科技性能持久性智能科技智能科技智能科技技铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x02"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux02"><div th:class="ji02"><img th:class="jiimg02" th:src="@{/images/index/liaot02.png}" alt=""><span>铸造性能持久性智能科技性能持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技</span></div></li><br>
+            <li><div th:class="x02"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux02"><div th:class="ji02"><img th:class="jiimg02" th:src="@{/images/index/liaot02.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x01"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux01"><div th:class="ji01"><img th:class="jiimg01" th:src="@{/images/index/liaot01.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x02"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux02"><div th:class="ji02"><img th:class="jiimg02" th:src="@{/images/index/liaot02.png}" alt=""><span>铸造性能持久性智能科技智能科技智能科技铸造性技铸造性能持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技持久性智能科技智能科技智能科技技性能持久性智能科技智能科技智能科技技</span></div></div></li><br>
+            <li><div th:class="x02"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux02"><div th:class="ji02"><img th:class="jiimg02" th:src="@{/images/index/liaot02.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+            <li><div th:class="x02"><img src="../images/index/user.jpg" style="height: 44px;width: 44px" class="layui-nav-img toux02"><div th:class="ji02"><img th:class="jiimg02" th:src="@{/images/index/liaot02.png}" alt=""><span>铸造性能持久性智能科技</span></div></div></li><br>
+        </ul>
+    </div>
+    <div th:class="inputbox">
+        <div></div>
+        <div class="faceDiv" style="display: none"></div>
+        <div class="Input_Foot"><a class="imgBtn" href="javascript:void(0);"></a></div>
+        <div>
+            <textarea id="message" rows="5" th:class="liaotcontent"></textarea>
+            <button class="layui-btn" id="connecta" th:onclick="connectax()">连接服务器</button><button class="layui-btn" id="disconnecta" th:onclick="disconnectax()">退出群聊</button><button class="layui-btn" id="senda" th:onclick="sendMsg()">发送</button>
+        </div>
+    </div>
+    <input type="hidden" value="no" th:class="now_role">
+</div>
+<script>
+
+</script>
+</body>
+</html>

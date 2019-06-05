@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>个人信息</title>
+    <link rel="icon" href="../images/index/timg.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style>
+        body{margin: 10px;}
+        #pageDemo{text-align: center;margin: auto}
+        table{text-align: center}
+        .geren{width: 99%;height: 35px; border: 1px solid darkcyan;margin: auto;background: rgba(45, 139, 93, 0.73);margin-top: 20px  }
+        h6{ color: white;margin-top: 7px;margin-left: 10px;font-size: 16px}
+        .geren span{  float: right;margin-top: -32px ;font-size: 16px;padding: 5px}
+        .geren span a{ color: white;}
+        .myMP{  margin: 15px;  }
+        .myB{  margin-bottom: 20px;  }
+        .list-inline li{margin: 28px}
+        .hr{margin-top: -20px}
+        label{margin: 5px}
+        /*查看请假详情样式*/
+        .media-body ul li{line-height: 30px;margin-left: 10px}
+    </style>
+</head>
+<body>
+<h1>个人信息管理</h1>
+<hr>
+<div class="geren">
+    <h6>个人信息详情</h6>
+    <span><a  data-toggle="modal" data-target="#mymodal"  href="#">修改电话号码 </a></span>
+    <span><a data-toggle="modal" data-target="#mymoda2"  href="#">修改密码 &nbsp;|</a></span>
+</div>
+<ul class="list-inline">
+    <li>员工编号：10011</li>
+    <li>姓名：隔壁老王</li>
+    <li>性别：男</li>
+    <li>职位：财务管理员</li>
+    <li>联系电话：12345678911</li>
+    <li>入职时间：2019-05-12</li>
+</ul>
+<hr class="hr">
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">公告</li>
+        <li>请假</li>
+        <li>出勤信息</li>
+    </ul>
+    <!--修改电话号码模态框 -->
+    <div id="mymodal" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改手机号</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone" class="form-control" type="text" placeholder="原来的手机号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone2"class="form-control" type="text" placeholder="新手机号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone3"class="form-control" type="text" placeholder="确认新手机号"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="确定修改"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--修改密码模态框-->
+    <div id="mymoda2" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password" class="form-control" type="text" placeholder="原来的密码"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password2"class="form-control" type="text" placeholder="新密码"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password3"class="form-control" type="text" placeholder="确认新密码"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="确定修改"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--查看请假模态框-->
+    <div id="mymoda3" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">请假详情</h4>
+                </div>
+                <div class="media-body">
+                    <ul>
+                        <li>员工编号：10011</li>
+                        <li>请假日期：2019-05-12</li>
+                        <li>请假天数：2</li>
+                        <li>请假理由：我也不知道为什么请假！</li>
+                        <li>审批状态：已通过</li>
+                        <li>处理人：程龙飞 </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新增请假模态框-->
+    <div id="mymoda4" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="gonghao" class="form-control" type="text" placeholder="员工编号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="name" class="form-control" type="text" placeholder="姓名"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjia"class="form-control" type="date" placeholder="请假日期"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjiatianhsu"class="form-control" type="text" placeholder="请假天数"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjialiyou"class="form-control" type="text" placeholder="请假理由"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="添加请假"/>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-tab-content conter">
+        <div class="layui-tab-item">内容1</div>
+        <div class="layui-tab-item">
+            <div class="panel-body form-inline">
+                <label>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">  请假年份：</button>
+                        <div class="btn-group" role="group">
+                            <input type="date" class="form-control"/>
+                        </div>
+                    </div>
+                </label>
+                <label>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default"> 审批状况：</button>
+                        <div class="btn-group" role="group">
+                            <select name="quiz" class="form-control">
+                                <option value="">请选择</option>
+                                <option value="">待审核</option>
+                                <option value="">已通过</option>
+                            </select>
+                        </div>
+                    </div>
+                </label>
+                <input type="button" name="" id="" value="搜索" class="btn" />
+                <label class="sousuo">
+                    <input type="button" name=""  data-toggle="modal" data-target="#mymoda4"  value="新增请假" class="btn" />
+                </label>
+            </div>
+
+            <!--数据表格-->
+            <table class="layui-hide" id="demo" lay-filter="test"></table>
+
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-primary layui-btn-xs"  data-toggle="modal" data-target="#mymoda3" lay-event="detail">查看</a>
+            </script>
+
+            <div class="layui-tab layui-tab-brief  demo" lay-filter="demo">
+                <div class="layui-tab-item">
+                    <div id="pageDemo"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">内容4</div>
+    </div>
+</div>
+
+
+<script src="../layui/layui.js"></script>
+<script src="../js/jquery-1.12.4.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script>
+    layui.config({
+        version: '1554901098009' //为了更新 js 缓存，可忽略
+    });
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function(){
+        var laydate = layui.laydate //日期
+            ,laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,table = layui.table //表格
+            ,element = layui.element //元素操作
+            ,slider = layui.slider //滑块
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#demo'
+            ,height: 544
+            ,url:'../../Bookofbooks/json/Personalinformation.json' //数据接口
+            ,title: '用户表'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                ,{field: 'id', title: 'ID', width:45}
+                ,{field: 'gonghao', title: '工号', width:179}
+                ,{field: 'Leavedate', title: '  请假日期', width:180}
+                ,{field: 'tianshu', title: '请假天数', width: 100}
+                ,{field: 'qingjialiyou', title: '请假理由', width: 308}
+                ,{field: 'experience', title: '审批状态', width:180}
+                ,{field: 'wealth', title: '处理人', width: 161}
+                ,{fixed: 'right', title: '操作', width: 100, toolbar: '#barDemo'}
+            ]]
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+
+            }
+        });
+
+        //分页
+        laypage.render({
+            elem: 'pageDemo' //分页容器的id
+            ,count: 10 //总页数
+            ,skin: '#1E9FFF' //自定义选中色值
+            //,skip: true //开启跳页
+            ,jump: function(obj, first){
+                if(!first){
+                    layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+                }
+            }
+        });
+        slider.render({
+            elem: '#sliderDemo'
+            ,input: true //输入框
+        });
+
+
+    });
+
+</script>
+</body>
+</html>

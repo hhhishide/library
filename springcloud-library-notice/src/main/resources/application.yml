@@ -1,0 +1,41 @@
+# 端口
+server:
+  port: 8007
+
+spring:
+  # 配置数据源
+  datasource:
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/library?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  thymeleaf:
+    cache: false
+  security:
+    user:
+      name: root
+      password: 1234
+  application:
+    name: library-notice
+#  mail:
+#    host: smtp.qq.com
+#    username: 2309316384@qq.com
+#    password: kbiiroegvrxsebah
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
+logging:
+  level:
+    com.example.library.Mapper: debug
+# mapper文件映射
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.springcloud.springcloudlibrarynotice.pojo
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://library01:7001/eureka/,http://library02:7002/eureka/

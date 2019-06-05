@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>个人信息</title>
+    <link rel="icon" th:href="@{/images/index/timg.jpg}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <style>
+
+        A:link{text-decoration:none;}
+        A:visited{text-decoration:none;}
+        A:active{text-decoration:none;}
+        #pageDemo{text-align: center;margin: auto}
+        table{text-align: center}
+        .geren{width: 99%;height: 35px; border: 1px solid darkcyan;margin: auto;background: rgba(45, 139, 93, 0.73);margin-top: 20px  }
+        h6{ color: white;margin-top: 7px;margin-left: 10px;font-size: 16px}
+        .geren span{  float: right;margin-top:-32px;font-size: 16px;padding: 5px;}
+        .geren span a{ color: white;}
+        .myMP{  margin: 15px;  }
+        .myB{  margin-bottom: 20px;  }
+        .list-inline li{
+            margin: 18px;
+            font-size: 16px;
+        }
+        .list-inline{
+            margin-top: 6px;
+            margin-left: 100px;
+        }
+        .hr{margin-top: -20px}
+        label{margin: 5px}
+        /*查看请假详情样式*/
+        .media-body ul li{line-height: 30px;margin-left: 10px}
+
+        /*index样式*/
+        .toubu li{
+            display: inline;
+        }
+        .toubu li:first-child div{
+            color: #fff;
+            color: rgba(255,255,255,.7);
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .layui-nav-child dd{
+            margin-top: 6px;
+        }
+        .layui-nav-child a{
+            text-align: center;
+        }
+
+        /*分页*/
+        .paging ul li{
+            float: left;
+        }
+        .paging .yeshu{
+            margin: 0px;
+        }
+        .paging ul li a{
+            float: left;
+            /*margin-left: 20px;*/
+            border: 1px solid #e2e2e2;
+            padding: 0 16px;
+            height: 30px;
+            line-height: 28px;
+            margin: 0 -1px 5px 0;
+            background-color: #fff;
+            vertical-align: middle;
+            color: #333;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .yeshu a{
+            border-radius: 2px;
+            float: left;
+            /*margin-left: 20px;*/
+            border: 1px solid #e2e2e2;
+            padding: 0 16px;
+            height: 28px;
+            line-height: 28px;
+            margin: 0 -1px 5px 0;
+            background-color: #fff;
+            vertical-align: middle;
+            color: #333;
+            font-size: 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .paging ul li a:hover{
+            color: #009688;
+            cursor:pointer;
+        }
+        /*分页END*/
+        .attendtou tr th{
+            text-align: center;
+        }
+        .daka{
+            float: right;
+            display: inline-block;
+            margin-top: 18px;
+            margin-right: 60px;
+        }
+        h1{
+            display: inline-block;
+        }
+        .btnmd{
+            border: 1px transparent;
+            width: 50%;
+            margin: auto;
+            border: 1px solid lightgray;
+            padding-left: 20px;
+            padding-right: 800px;
+        }
+        .btnmd label{
+            margin: 0 auto;
+        }
+        .md{padding: 15px}
+        .active{margin-left: 20px}
+        .input-group-addon {
+            padding: 9px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+            background-color: #FBFBFB;
+            border: 1px solid #ccc;
+            border-radius: 1px;
+        }
+        .mda:focus{
+            box-shadow: none !important;
+            border: 1px solid #aaaaaa;
+        }
+        .mda{
+            display: block;
+            width: 100%;
+            height: 40px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 1px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+        .btn-md{
+            background-color: #009688;
+            border-color: darkcyan;
+        }
+        .btn-md:hover{
+            border-color: darkcyan;
+            background-color: rgba(0, 130, 113, 0.69);
+        }
+        .md01{
+            width: 400px;
+        }
+        .md{
+            margin-bottom: -10px;
+        }
+        .md02{
+            width: 400px;
+        }
+        .md03{
+            width: 260px;
+        }
+        #sizing-addon5{
+            width: 900px;
+            border-radius: 2px;
+            background-color: #FBFBFB;
+            border: 1px solid #ccc;
+        }
+        .layui-textarea{
+            min-height: 100px;
+            height: auto;
+            width: 594px;
+            line-height: 20px;
+            padding: 6px 10px;
+            resize: vertical;
+            margin-left: 14px;
+            border: 1px solid lightgrey;
+        }
+        .buttona01{
+            margin-left: 280px;
+            margin-top: 16px;
+            margin-bottom: 6px;
+        }
+        .notice_content{
+            background-color: white;
+            display: block;
+            margin: 0 auto;
+            width: 950px;
+            padding: 20px 30px 10px 20px;
+            border: 1px solid #adadad;
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+        .noticea{
+            width: 900px;
+            border: 1px solid #999999;
+            border-radius: 2px;
+        }
+        .notice_title{
+            display: block;
+            padding-left: 12px;
+            padding-bottom: 4px;
+            margin-top: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #999999;
+            clear: both;
+        }
+        .fabur{
+            margin-left: 20px;
+            font-weight: 400;
+            font-size: 12px;
+        }
+        .notice_foot{
+            margin-top: 18px;
+            position: relative;
+            left: 650px;
+        }
+        .notice_contenta{
+            margin-top: 6px;
+            margin-left: 12px;
+            width: 98%;
+        }
+
+        .layui-tab-item{
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .ggl{
+            border: 1px solid #E6E9ED;
+            background-color: #F2F2F2;
+            border-radius: 2px;
+        }
+        .layui-tab-item h2{
+            margin-top: -4px;
+        }
+        .zhankai{
+            float: right;
+            margin-left: 60px;
+            margin-right: 8px;
+            margin-top: -10px;
+            padding: 10px 10px 10px 10px;
+            color: #0c1971;
+            clear: both;
+        }
+        .zhankai span:hover{
+            color: blue;
+            text-decoration: underline;
+        }
+        .zhan{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .bianjia{
+            display: inline-block;
+            position: relative;
+            left: 1032px;
+            bottom: 50px;
+        }
+        .glyphicon-remove{
+            float: right;
+            margin-right: -28px;
+            margin-top: -25px;
+            /*position: relative;
+            left: 912px;
+            top: -118px;*/
+            color: #aaaaaa;
+            font-size: 18px;
+            transition: color 0.2s;
+            z-index: 1000;
+        }
+        .glyphicon-remove:hover{
+            cursor:pointer;
+            color: #737373;
+        }
+    </style>
+</head>
+<body>
+<h1>个人信息管理</h1>
+<button class="layui-btn daka" th:onclick="daka()">打卡</button>
+<hr>
+<div class="geren">
+    <h6>个人信息详情</h6>
+    <span><a  data-toggle="modal" data-target="#mymodal"  href="#">修改电话号码 </a></span>
+    <span><a data-toggle="modal" data-target="#mymoda2"  href="#">修改密码 &nbsp;|</a></span>
+</div>
+<ul class="list-inline">
+    <li>员工编号：<span th:text="${employeea.getEmp_id()}"></span></li>
+    <li>姓名：<span th:text="${employeea.getEmp_name()}"></span></li>
+    <li>性别：<span th:if="${employeea.getEmp_gender()==0}">男</span><span th:if="${employeea.getEmp_gender()==1}">女</span></li>
+    <li>职位：<span sec:authentication="principal.authorities[0]"></span></li>
+    <li>联系电话：<span th:text="${employeea.getEmp_phone()}"></span></li>
+    <li>入职时间：<span th:text="${employeea.getEmp_hiredate()}"></span></li>
+</ul>
+<hr class="hr">
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">公告</li>
+        <li>出勤信息</li>
+        <li>请假</li>
+    </ul>
+    <!--修改电话号码模态框 -->
+    <div id="mymodal" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改手机号</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone" class="form-control" type="text" placeholder="原来的手机号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone2"class="form-control" type="text" placeholder="新手机号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="phone3"class="form-control" type="text" placeholder="确认新手机号"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="确定修改"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--修改密码模态框-->
+    <div id="mymoda2" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password" class="form-control" type="text" placeholder="原来的密码"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password2"class="form-control" type="text" placeholder="新密码"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="password3"class="form-control" type="text" placeholder="确认新密码"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="确定修改"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--查看请假模态框-->
+    <div id="mymoda3" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">请假详情</h4>
+                </div>
+                <div class="media-body">
+                    <ul>
+                        <li>员工编号：10011</li>
+                        <li>请假日期：2019-05-12</li>
+                        <li>请假天数：2</li>
+                        <li>请假理由：我也不知道为什么请假！</li>
+                        <li>审批状态：已通过</li>
+                        <li>处理人：程龙飞 </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新增请假模态框-->
+    <div id="mymoda4" class="modal fade bs-examlpe-modal-sm"><!-- modal固定布局，上下左右都是0表示充满全屏，支持移动设备上使用触摸方式进行滚动。。-->
+        <div class="modal-dialog modal-sm"><!-- modal-dialog默认相对定位，自适应宽度，大于768px时宽度600，居中-->
+            <div class="modal-content"><!-- modal-content模态框的边框、边距、背景色、阴影效果。-->
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="media-body">
+                    <form action="">
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="gonghao" class="form-control" type="text" placeholder="员工编号"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="name" class="form-control" type="text" placeholder="姓名"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjia"class="form-control" type="date" placeholder="请假日期"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjiatianhsu"class="form-control" type="text" placeholder="请假天数"/>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1 myMP">
+                            <input id="qingjialiyou"class="form-control" type="text" placeholder="请假理由"/>
+                        </div>
+                        <div class="col-md-12 myB">
+                            <input class="btn btn-primary form-control" type="submit" value="添加请假"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-tab-content conter">
+        <div class="layui-tab-item ggl">
+            <h2 style="text-align: center;border-bottom: 2px solid #E6E9ED; padding-bottom: 16px;">公告栏</h2>
+            <button class="layui-btn bianjia" th:onclick="bianjia()" sec:authorize="hasAnyAuthority('超级管理员')">编辑</button>
+                <div th:class="notice_content" th:each="noticea : ${noticeList}">
+                    <div th:class="noticea">
+                        <div th:class="notice_title">
+                            <span th:text="${noticea.getTitle()}">重要通知!!!</span>
+                            <span class="glyphicon glyphicon-remove" th:onclick="'javascript:deleta_notice('+${noticea.getId()}+')'" style="display: none;"></span>
+                        </div>
+                        <div th:class="notice_contenta" th:text="${noticea.getContent()}">
+                            朝花夕拾》这本书，能让更多的青少年阅读，并且能够感觉到其中的温馨回忆，和理性的批判色彩。　这本散文集，非常适合青少年阅读，而且它现已经列入中学生必读的课外书目，是中考必考的文学作品之一。朝花夕拾》这本书，能让更多的青少年阅读，并且能够感觉到其中的温馨回忆，和理性的批判色彩。　这本散文集，非常适合青少年阅读，而且它现已经列入中学生必读的课外书目，是中考必考的文学作品之一。
+                        </div>
+                        <div th:class="zhankai" th:if="${noticea.getContent().length()>124}">
+                            <span onclick="zhankai(this)">展开</span>
+                        </div>
+                        <div th:class="notice_foot">
+                            <span th:class="fabur"><span th:text="${noticea.getEmpname()}"></span>&nbsp;发布于&nbsp;<span th:text="${noticea.getIssue_time()}"></span></span>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="panel-body form-inline">
+                <label>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">  出勤年月：</button>
+                        <div class="btn-group" role="group">
+                            <input type="date" class="form-control" id="chuqdate01">
+                            <span>至</span>
+                            <input type="date" class="form-control" id="chuqdate02">
+                        </div>
+                    </div>
+                </label>
+                <label>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default"> 打卡状态：</button>
+                        <div class="btn-group" role="group">
+                            <select name="quiz" id="daka_state" class="form-control">
+                                <option value="0">请选择</option>
+                                <option value="1">迟到</option>
+                                <option value="2">早退</option>
+                                <option value="3">未打满</option>
+                            </select>
+                        </div>
+                    </div>
+                </label>
+                <input type="button" name="" id="" th:onclick="docondition()" value="搜索" class="btn" />
+                <label class="sousuo">
+                    <input type="button" name="" th:onclick="dodate()"  data-toggle="modal" data-target="#mymoda4"  value="新增请假" class="btn" />
+                </label>
+            </div>
+
+            <!--数据表格-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">出勤详情</div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead th:class="attendtou">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>员工编号</th>
+                                    <th>员工名称</th>
+                                    <th>早晨打卡时间</th>
+                                    <th>早晨打卡状态</th>
+                                    <th>傍晚打卡时间</th>
+                                    <th>傍晚打卡状态</th>
+                                    <th>当天日期</th>
+                                </tr>
+                                </thead>
+                                <tbody th:class="attendList">
+                                <div th:class="zanwu" th:if="${attendancelist.size()==0}" style="display: block; height: 30px;width: 100%;position: relative;top: 80px;">
+                                    <span style="display:block; font-size: 18px;text-align: center;">暂无数据</span>
+                                </div>
+                                <tr th:each="attendancea :${attendancelist}">
+                                    <td th:text="${attendancea.getId()}"></td>
+                                    <td th:text="${attendancea.getUserid()}"></td>
+                                    <td th:text="${employeea.getEmp_name()}"></td>
+                                    <td th:if="${attendancea.getMorning_time()!=null}" th:text="${attendancea.getMorning_time()}"></td>
+                                    <td th:if="${attendancea.getMorning_time()==null}" th:text="无"></td>
+                                    <td th:if="${attendancea.getMorning_state()==null}" th:text="未打卡"></td>
+                                    <td th:if="${attendancea.getMorning_state()==0}" th:text="正常"></td>
+                                    <td th:if="${attendancea.getMorning_state()==1}" th:text="迟到"></td>
+                                    <td th:if="${attendancea.getEvening_time()!=null}" th:text="${attendancea.getEvening_time()}"></td>
+                                    <td th:if="${attendancea.getEvening_time()==null}" th:text="无"></td>
+                                    <td th:if="${attendancea.getEvening_state()==null}" th:text="未打卡"></td>
+                                    <td th:if="${attendancea.getEvening_state()==0}" th:text="正常"></td>
+                                    <td th:if="${attendancea.getEvening_state()==1}" th:text="早退"></td>
+                                    <td th:text="${attendancea.getOndate()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="paging">
+                                <input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+                                <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">
+                                <ul>
+                                    <li><a th:onclick="doPerson(1)">首页</a></li>
+                                    <li><a th:onclick="|doPerson('a')|" style="border-radius: 2px 0 0 2px;">上一页</a></li>
+                                    <li class="yeshu">
+                                    </li>
+                                    <li><a th:onclick="|doPerson('b')|" style="border-radius: 0 2px 2px 0;">下一页</a></li>
+                                    <li><a th:onclick="|doPerson(${fenye.getTotalPageCount()})|">尾页</a></li>
+                                </ul>
+                            </div>
+                            <!--<input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+                            <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">-->
+                            <!--<div class="booklists">
+                                <div class="listding">
+
+                                </div>
+                                <ul class="">
+                                    <li class="booklista" th:each="booklista,userStat : ${booklist}">
+                                        <div class="tao">
+                                            <div class="booklistaa" th:href="@{/fiction/getbookbyid/__${booklista.getId()}__}">
+                                                <a th:href="@{/fiction/getbookbyid(bookid=${booklista.getId()})}">
+                                                    <img th:src="@{/images/image/__${booklista.getImagepath()}__}" alt="">
+                                                </a>
+                                                <div class="booknei">
+                                                    <a class="booknamea" href="#" th:text="${booklista.getBookname()}"></a>
+                                                    <span class="authoda" th:text="'作者:'+${booklista.getAuthod()}"></span>
+                                                    <span class="booktypea" th:text="${booklista.getType()}"></span><br>
+                                                    &lt;!&ndash;<p class="jianjiea" th:utext="${booklista.getSynopsis()}"></p>&ndash;&gt;
+                                                    <div class="jianjiea" th:utext="${booklista.getSynopsis()}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="booklista" th:if="${booklist.size()%2!=0}"></li>
+                                </ul><br>
+                                <div class="paging">
+                                    <ul>
+                                        <li><a href="#">首页</a></li>
+                                        <li><a th:href="@{/fiction/dolist(PageNo=${fenye.getCurrentPageNo()-1})}" style="border-radius: 2px 0 0 2px;">上一页</a></li>
+                                        <li class="yeshu">
+                                        </li>
+                                        <li><a th:href="@{/fiction/dolist(PageNo=${fenye.getCurrentPageNo()+1})}" style="border-radius: 0 2px 2px 0;">下一页</a></li>
+                                        <li><a href="#">尾页</a></li>
+                                    </ul>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--请假申请-->
+        <div class="layui-tab-item">
+            <div class="btnmd">
+                <form th:action="@{/library/addleave}" th:class="leave_form" method="post">
+                    <input type="hidden" name="leave_id" th:value="${session.USER.getEmp_id()}">
+                    <div class="input-group input-group-md  md md01">
+                        <span class="input-group-addon" id="sizing-addon1">姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <input type="text" name="leave_empname" th:value="${session.USER.getEmp_name()}" class="form-control mda" placeholder="" aria-describedby="sizing-addon1" disabled="disabled" >
+                    </div>
+                    <div class="input-group input-group-md md md02">
+                        <span class="input-group-addon" id="sizing-addon2">开始时间：</span>
+                        <input type="date" name="leave_starttime" class="form-control mda" placeholder="" aria-describedby="sizing-addon1">
+                    </div>
+                    <div class="input-group input-group-md md md02">
+                        <span class="input-group-addon" id="sizing-addon3" >结束时间：</span>
+                        <input type="date" name="leave_overtime" class="form-control mda" placeholder="" aria-describedby="sizing-addon1" th:onchange="jisuan()">
+                    </div>
+                    <div class="input-group input-group-md md md03">
+                        <span class="input-group-addon" id="sizing-addon4">请假天数：</span>
+                        <input type="text" name="leave_number" class="form-control mda" placeholder="请输入请假天数" aria-describedby="sizing-addon1">
+                    </div>
+                    <div class="input-group input-group-md md">
+                        <span class="input-group-addon" id="sizing-addon5">请假原因：</span><br>
+                    </div>
+                    <textarea placeholder="请输入原因" name="leave_cause" class="layui-textarea"></textarea>
+                    <button type="button" class="btn btn-primary btn-md buttona01" th:onclick="addleave()">&nbsp;提&nbsp;&nbsp;交&nbsp;</button>
+                </form>
+        </div>
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-primary layui-btn-xs"  data-toggle="modal" data-target="#mymoda3" lay-event="detail">查看</a>
+            </script>
+
+            <div class="layui-tab layui-tab-brief  demo" lay-filter="demo">
+                <div class="layui-tab-item">
+                    <div id="pageDemo"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">内容4</div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+<script th:src="@{/js/larry.js}"></script>
+<script th:src="@{/js/jquery-1.12.4.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/notices.js}"></script>
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        //年月选择器
+        laydate.render({
+            elem: '#test3'
+            , type: 'month'
+        });
+    });
+
+</script>
+</body>
+</html>

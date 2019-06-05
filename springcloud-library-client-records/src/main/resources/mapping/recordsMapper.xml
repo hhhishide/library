@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springcloud.records.Dao.recMapper">
+    <insert id="addrecords">
+        INSERT INTO `records`(`username`,`content`)VALUES(#{username},#{content})
+    </insert>
+
+    <select id="getrecordsAll" resultType="records">
+        SELECT r.*,e.`imgpath` FROM `records` r INNER JOIN `employee` e ON r.username=e.emp_username
+    </select>
+
+    <select id="getFace" resultType="face">
+        SELECT * FROM `face`
+    </select>
+</mapper>

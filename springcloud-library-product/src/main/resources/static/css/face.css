@@ -1,0 +1,57 @@
+/* QQ表情*/
+.Input_Foot {
+    background-color: #fff;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+    position: relative;
+    right: 30px;
+    top: 0px;
+}
+.imgBtn {
+    float: left;
+    margin-top: 8px;
+    margin-left: 40px;
+    background-image: url(../images/face/imgs.png);
+    background-repeat: no-repeat;
+    background-position: 0 -13px;
+    height: 18px;
+    width: 20px;
+    cursor: pointer;
+}
+.imgBtn:active {
+    margin-top: 9px;
+}
+.imgBtn:hover {
+    background-position: 0 -31px
+}
+
+.faceDiv {
+    margin-left: 32px;
+    width: 477px;
+    height: 114px;
+    border: 1px solid #ccc;
+    position: absolute;
+    background-color: #fff;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+    padding-right: -10px;
+}
+.faceDiv>img {
+    border: 1px solid #ccc;
+    float: left;
+    margin-left: -1px;
+    margin-top: -1px;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 3px 3px 3px 3px;
+    cursor: pointer;
+}
+.faceDiv>img:hover {
+    background-color: #efefef;
+}
+.faceDiv>img:active {
+    padding: 4px 3px 2px 3px;
+}

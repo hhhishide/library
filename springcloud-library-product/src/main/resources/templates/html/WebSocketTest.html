@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-1.12.4.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+</head>
+<body>
+
+    <br>
+    <input type="text" id="message">
+    <button th:onclick="connect()">连接</button>
+    <button th:onclick="sendMessage()">发送消息</button>
+    <button th:onclick="closeWebSocket()">关闭WebSocket连接</button>
+    <div id="context">
+    </div>
+<script>
+    var websocket = null;
+    /*// 判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window){
+        websocket = new WebSocket("ws://localhost:8080/ws");
+        closeWebSocket()
+    }else{
+        alert("当前浏览器不支持WebSocket!")
+    }*/
+    function connect(){
+        // 判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window){
+            websocket = new WebSocket("ws://localhost:8080/ws");
+        }else{
+            alert("当前浏览器不支持WebSocket!")
+        }
+        // 连接发生错误的回调方法
+        websocket.onerror = function () {
+            appendMessage("error");
+        }
+        // 连接成功建立的回调方法
+        websocket.onopen = function () {
+            appendMessage("open")
+        }
+        // 收到消息回调方法
+        websocket.onmessage = function (event) {
+            appendMessage(event.data);
+        }
+        // 连接关闭的回调方法
+        websocket.onclose = function () {
+            appendMessage("退出聊天!");
+        }
+        window.onbeforeunload = function () {
+            websocket.close()
+        }
+    }
+    function appendMessage(message) {
+        var context = $("#context").html() + "<br/>" + message;
+        $("#context").html(context);
+    }
+    function closeWebSocket() {
+        websocket.close();
+    }
+    function sendMessage() {
+        var message = $("#message").val();
+        websocket.send(message);
+    }
+
+</script>
+</body>
+</html>

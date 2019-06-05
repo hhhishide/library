@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springcloudlibraryemp.Dao.EmpMapper">
+    <select id="login" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            `employee`
+        WHERE
+            `emp_username`=#{username} AND `emp_pwd`=#{password}
+    </select>
+
+    <select id="selectEmpByname" resultType="employee">
+        SELECT * FROM `employee` WHERE `emp_username`=#{username}
+    </select>
+
+    <select id="selectattendByid" resultType="attendance">
+        SELECT * FROM `attendance` WHERE `userid`=#{empid} LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(*) FROM `attendance`
+        WHERE 1=1
+        <if test="prefixdate!=null and prefixdate!='' and suffixdate!=null and suffixdate!=''">
+            AND
+            DATE_FORMAT(`Ondate`,"%Y-%m-%d") BETWEEN #{prefixdate} AND #{suffixdate}
+        </if>
+        <if test="daka_state!=null and daka_state!=0">
+            AND
+            `id` IN(
+            SELECT `id` FROM `attendance` WHERE 1=1
+            <if test="daka_state==1">
+                and `morning_state`=1
+            </if>
+            <if test="daka_state==2">
+                and `evening_state`=1
+            </if>
+            <if test="daka_state==3">
+                and `morning_state`=1 OR `evening_state`=1 OR `morning_state`=2 OR `evening_state`=2
+            </if>
+            )
+        </if>
+        AND `userid`=#{empid}
+    </select>
+
+    <update id="daka">
+        <if test="hour&lt;=12">
+            UPDATE
+                  `attendance`
+            SET
+                  `morning_time`=#{timea},`morning_state`=<if test="hour&lt;=9">0</if><if test="hour&gt;9">1</if>
+            WHERE
+                  `userid`=#{empid} AND `Ondate`=#{datetime}
+        </if>
+        <if test="hour&gt;12">
+            UPDATE
+                  `attendance`
+            SET
+                  `evening_time`=#{timea},`evening_state`=<if test="hour&lt;18">1</if><if test="hour&gt;=18">0</if>
+            WHERE
+                  `userid`=#{empid} AND `Ondate`=#{datetime}
+        </if>
+    </update>
+
+
+    <select id="getattendBycondition" resultType="attendance">
+            SELECT * FROM `attendance`
+            WHERE 1=1 AND `userid`=#{empid}
+            <if test="prefixdate!=null and prefixdate!='' and suffixdate!=null and suffixdate!=''">
+                AND
+                DATE_FORMAT(`Ondate`,"%Y-%m-%d") BETWEEN #{prefixdate} AND #{suffixdate}
+            </if>
+            <if test="daka_state!=null and daka_state!=0">
+                AND
+                `id` IN(
+                SELECT `id` FROM `attendance` WHERE 1=1
+                <if test="daka_state==1">
+                    and `morning_state`=1 OR `morning_state`=null
+                </if>
+                <if test="daka_state==2">
+                    and `evening_state`=1 OR `evening_state`=null
+                </if>
+                <if test="daka_state==3">
+                    and `morning_state`=1 OR `evening_state`=1 OR `morning_state`=2 OR `evening_state`=2 OR `morning_state`=null OR `evening_state`=null
+                </if>
+                )
+            </if>
+            LIMIT #{pageNo}, #{pageSize}
+    </select>
+    <insert id="adddaka">
+        INSERT INTO `attendance`(`userid`,`Ondate`)VALUES(#{empid}, #{datetime})
+    </insert>
+    <select id="isdaka" resultType="int">
+        SELECT COUNT(*) FROM `attendance` WHERE `userid`=#{empid} AND `Ondate`=#{datetime}
+        <if test="timeas&lt;12">
+            AND `morning_state`=1
+        </if>
+        <if test="timeas&gt;=12">
+            AND `evening_state`=1
+        </if>
+    </select>
+
+    <insert id="addleave" parameterType="leave">
+      INSERT INTO `leave`
+          (`leave_userid`,`leave_empname`,`leave_starttime`,`leave_overtime`,`leave_number`,`leave_cause`)
+      VALUES
+          (#{leave_userid},#{leave_empname},#{leave_starttime},#{leave_overtime},#{leave_number},#{leave_cause})
+    </insert>
+
+    <delete id="deleta_notice">
+        DELETE FROM `notice` WHERE `id`=#{notice_id}
+    </delete>
+
+    <select id="getAllEmp" resultType="employee">
+        SELECT * FROM `employee`
+        <where>
+            1=1
+            <if test="empName!='' and empName!=null">
+               AND `emp_name` LIKE #{empName}
+            </if>
+            <if test="roleID!=8 and roleID!=null">
+               AND `emp_role` = #{roleID}
+            </if>
+            <if test="entry_starttime!=null and entry_prefixtime!=null">
+                AND
+                DATE_FORMAT(`emp_hiredate`,"%Y-%m-%d") BETWEEN #{entry_starttime} AND #{entry_prefixtime}
+            </if>
+        </where>
+        LIMIT #{pageNo}, 5
+    </select>
+    <select id="getEmpBycondition" resultType="employee">
+        SELECT * FROM `employee`
+        <where>
+            1=1
+            <if test="empName!='' and empName!=null">
+                AND `emp_name` LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="roleID!=8 and roleID!=null">
+                AND `emp_role` = #{roleID}
+            </if>
+            <if test="entry_starttime!=null and entry_prefixtime!=null">
+                AND
+                DATE_FORMAT(`emp_hiredate`,"%Y-%m-%d") BETWEEN #{entry_starttime} AND #{entry_prefixtime}
+            </if>
+        </where>
+        LIMIT #{pageNo}, 5
+    </select>
+
+    <select id="getEmpCount" resultType="int">
+        SELECT COUNT(*) FROM `employee`
+        <where>
+            1=1
+            <if test="empName!='' and empName!=null">
+                AND `emp_name` LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="roleID!=8 and roleID!=null">
+                AND `emp_role` = #{roleID}
+            </if>
+            <if test="entry_starttime!=null and entry_prefixtime!=null">
+                AND
+                DATE_FORMAT(`emp_hiredate`,"%Y-%m-%d") BETWEEN #{entry_starttime} AND #{entry_prefixtime}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteEmp">
+        DELETE FROM `employee` WHERE `emp_id`=#{emp_id}
+    </delete>
+
+    <insert id="addEmp" parameterType="employee">
+        INSERT INTO `employee`
+            (`emp_name`,`emp_role`,`emp_pwd`,`emp_wage`,`emp_hiredate`,`emp_username`,`emp_gender`,`emp_phone`,`imgpath`)
+        VALUES
+            (#{emp_name},#{emp_role},#{emp_pwd},#{emp_wage},NOW(),#{emp_username},#{emp_gender},#{emp_phone},#{imgpath})
+    </insert>
+
+    <select id="modaka" resultType="string">
+        SELECT `morning_time` FROM `attendance` WHERE `Ondate`=#{datetime} AND `userid`=#{empid}
+    </select>
+    <select id="endaka" resultType="string">
+        SELECT `evening_time` FROM `attendance` WHERE `Ondate`=#{datetime} AND `userid`=#{empid}
+    </select>
+</mapper>

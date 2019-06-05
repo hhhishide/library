@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springcloudlibrarybook.Dao.bookMapper">
+    <select id="getCount" resultType="int">
+        SELECT COUNT(*) FROM `book`
+        <where>
+            1=1
+            <if test="book_name!='' and book_name!=null">
+                AND `book_name` LIKE CONCAT("%",#{book_name},"%")
+            </if>
+            <if test="book_authod!=null and book_authod!=''">
+                AND `book_authod` LIKE CONCAT("%",#{book_authod},"%")
+            </if>
+            <if test="book_damage!=null and book_damage!=11">
+                AND `book_damage`=#{book_damage}
+            </if>
+        </where>
+    </select>
+    <select id="getBookList" resultType="book">
+        SELECT * FROM `book`
+        <where>
+            1=1
+            <if test="book_name!='' and book_name!=null">
+                AND `book_name` LIKE CONCAT("%",#{book_name},"%")
+            </if>
+            <if test="book_authod!=null and book_authod!=''">
+                AND `book_authod` LIKE CONCAT("%",#{book_authod},"%")
+            </if>
+            <if test="book_damage!=null and book_damage!=11">
+                AND `book_damage`=#{book_damage}
+            </if>
+        </where>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <insert id="addBook">
+        INSERT INTO `book`
+            (`book_name`,`book_authod`,`book_price`,`book_type`,`book_damage`)
+        VALUES
+            (#{book_name},#{book_authod},#{book_price},#{book_type},0)
+    </insert>
+</mapper>

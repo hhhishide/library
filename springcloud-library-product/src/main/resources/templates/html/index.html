@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>layout 后台大布局 - Layui</title>
+  <link rel="icon" th:href="@{/images/index/timg.jpg}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+  <style>
+    A:link{text-decoration:none;}
+    A:visited{text-decoration:none;}
+    A:active{text-decoration:none;}
+    .toubu li{
+        display: inline;
+    }
+    .toubu li:first-child div{
+        color: #fff;
+        color: rgba(255,255,255,.7);
+        display: inline-block;
+        margin-top: 16px;
+    }
+    .usertou{
+        margin-bottom: 10px;
+        margin-left: 4px;
+    }
+    .suo{
+        z-index: 10000;
+        color: whitesmoke;
+        float: right;
+        margin-top: 14px;
+        margin-right: -12px;
+    }
+    .norole{
+
+    }
+    .layui-nav-child dd{
+        margin-top: 6px;
+    }
+    .layui-nav-child a{
+        text-align: center;
+    }
+
+    .zhutia{
+      margin-left: 200px;
+    }
+
+    .toubu{
+      margin-right: 2%;
+    }
+    .zhuti{
+      position: absolute;
+      left: 13%;
+      top: 8%;
+      width: 86%;
+      height: 91%;
+      padding: 0px 20px 20px 20px;
+    }
+    .timea a{
+      position: relative;
+      bottom: 40px;
+      left: 200px;
+      font-size: 17px;
+      color: rgba(255,255,255,.7);
+    }
+  </style>
+</head>
+<input type="hidden" th:value="${session.USER.getEmp_id()}" id="empid">
+<input type="hidden" th:value="${session.USER.getEmp_name()}" id="uname">
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header" id="heada">
+    <div class="layui-logo">书海拾贝后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+      <li class="timea">
+        <a class="a" href="">当前时间:</a> <a class="a" href="javascript:;" id="date"></a>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right toubu">
+      <li><div>当前角色:&nbsp;<span sec:authentication="principal.authorities[0]"></span>&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+      <li class="layui-nav-item usertou">
+        <a href="javascript:;">
+          <img th:src="@{/images/tou/__${session.USER.getImgpath()}__}" style="height: 34px;width: 34px" class="layui-nav-img">
+            <span class="empName" sec:authentication="name"></span>
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+          <dd><a th:href="@{/logout}">退出系统</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item"><a href="javascript:void(0)" id="grxx">个人信息</a></li>
+          <!--员工管理-->
+          <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('员工管理员') || hasAnyAuthority('超级管理员')">
+              <div>
+                  <a class="" href="javascript:void(0)">员工管理</a>
+                  <dl class="layui-nav-child">
+                      <dd><a href="javascript:void(0)" th:class="doemp">员工信息查询</a></dd>
+                      <dd><a href="javascript:void(0)" th:class="doAddEmp">新增员工</a></dd>
+                  </dl>
+              </div>
+          </li>
+          <li class="layui-nav-item layui-nav-itemed" sec:authorize="!hasAnyAuthority('员工管理员') && !hasAnyAuthority('超级管理员')">
+              <div>
+                  <a class="" href="javascript:;">员工管理<span class="glyphicon glyphicon-lock suo"></span></a>
+                  <span class="layui-nav-child">
+            </span>
+              </div>
+          </li>
+        <!--用户管理-->
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('用户管理员') || hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">用户管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;">用户信息查询</a></dd>
+              <dd><a href="javascript:;">新增用户</a></dd>
+            </dl>
+          </div>
+        </li>
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="!hasAnyAuthority('用户管理员') && !hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">用户管理<span class="glyphicon glyphicon-lock suo"></span></a>
+            <span class="layui-nav-child">
+            </span>
+          </div>
+        </li>
+        <!--图书信息管理-->
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('图书管理员') || hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">图书信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;" th:class="dobooklist">图书信息查询</a></dd>
+              <dd><a href="javascript:;" th:class="addBook">新书入库</a></dd>
+              <dd><a href="javascript:;" th:class="book_sell">书籍出售</a></dd>
+            </dl>
+          </div>
+        </li>
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="!hasAnyAuthority('图书管理员') && !hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">图书信息管理<span class="glyphicon glyphicon-lock suo"></span></a>
+            <span class="layui-nav-child">
+            </span>
+          </div>
+        </li>
+        <!--借出归还管理-->
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('图书管理员') || hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">借出归还管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;">借出归还记录</a></dd>
+              <dd><a href="javascript:;">新增借出账单</a></dd>
+              <dd><a href="javascript:;">图书归还</a></dd>
+            </dl>
+          </div>
+        </li>
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="!hasAnyAuthority('图书管理员') && !hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">借出归还管理<span class="glyphicon glyphicon-lock suo"></span></a>
+            <span class="layui-nav-child">
+            </span>
+          </div>
+        </li>
+        <!--<li class="layui-nav-item">
+          <a href="javascript:;">图书管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>-->
+
+        <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li>
+        <li class="layui-nav-item"><a href="javascript:void(0)" id="doliaotian">聊天</a></li>
+        <li class="layui-nav-item" sec:authorize="hasAnyAuthority('超级管理员')">
+          <a href="javascript:void(0)" id="donotice">发布公告</a>
+        </li>
+      </ul>
+      <input type="hidden" id="ischao" th:value="yes" sec:authorize="hasAnyAuthority('超级管理员')">
+    </div>
+  </div>
+  <div class="zhuti" style="overflow-y: scroll;">
+  </div>
+  <input id="sessionid" type="hidden" value="123">
+  <input id="isno" type="hidden" value="">
+</div>
+<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/larry.js}"></script>
+<script th:src="@{/js/jquery-1.12.4.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/fenye.js}"></script>
+<script th:src="@{/js/notice.js}"></script>
+<script th:src="@{/js/emp.js}"></script>
+<script th:src="@{/js/bingtu.js}"></script>
+<!--<script th:src="@{/js/liaotian.js}"></script>-->
+<script>
+  /*日期*/
+  function funtime(){
+    //            新建一个date对象
+    var date =new Date();
+    var year = date.getFullYear();    //获取年
+    var month = date.getMonth()+1;     //获取月
+    var day = date.getDate();       //获取日
+    var hour = date.getHours();      //获取小时
+    var minutes = date.getMinutes();    //获取分
+    var seconds = date.getSeconds();    //获取秒
+    var week = date.getDay();
+    if(week==1){
+      week="一";
+    }if(week==2){
+      week="二";
+    }
+    if(week==3){
+      week="三";
+    }
+    if(week==4){
+      week="四";
+    }
+    if(week==5){
+      week="五";
+    }
+    if(week==6){
+      week="六";
+    }
+    if(week==7){
+      week="日";
+    }
+    var am="";
+    if(hour>=0 && hour<=12){
+      am = "上午";
+    }else{
+      am = "下午"
+    }
+    document.getElementById("date").innerHTML=year+"年"+month+"月"+day+"日"+" "+hour+":"+minutes+":"+seconds+" "+am+" 星期"+week;
+  }
+  /*onload = function(){
+    setInterval("funtime()",100);
+  }*/
+
+  $(function () {
+      /*var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth()+1;
+      var day = date.getDate();
+      var datetime = year+"/"+month+"/"+day;
+      $.ajax({
+        url: "/library/getDate",
+        type: "GET",
+        data: {datetime:datetime},
+        dateType:"json",
+        success: function (data) {
+          alert(data);
+        }
+      });*/
+  })
+
+  /**
+   * 预先加载好websocket
+   */
+  var stompClient = null;
+  function connect() {
+    var socket = new SockJS("/socket");
+    stompClient = Stomp.over(socket);
+    stompClient.connect({},function (frame) {
+      connect_callback();
+    });
+  }
+  var conSocket = function () {
+    var s = new SockJS("/socket");
+    var stompClient = Stomp.over(s);
+    stompClient.connect({}, function () {
+      console.log('notice socket connected');
+      stompClient.subscribe("/user/queue/cona", function (data) {
+        var obj = JSON.parse(data.body);
+        $("#sessionid").val(obj.sessionid);
+      });
+      /*订阅公告*/
+      if ($("#ischao").val()!="yes"){ //如果不是超级管理员的话就订阅消息
+        stompClient.subscribe("/sub/notice", function (data) {
+          var obj = JSON.parse(data.body);
+          var notice = "<h1 style=\"font-size:30px;text-align: center;margin-top: -10px\">"+obj.title+"</h1>" +
+                  "<p style=\"text-align: center;font-size:15px;margin-top:12px\">发布人:"+obj.username+"</p><div>"+obj.content+"</div>";
+          layer.open({
+            area: ['500px', '500px'],
+            title: '新公告'
+            ,content: notice
+          });
+
+        });
+      }
+    });
+  }
+
+  var connect_callback = function () {
+    stompClient.send("/request/connectToUser",{}, $(".empName").text());
+    conSocket();
+  }
+  connect();
+  $(function () {
+    if ($("#isno").val()==""){
+      var empName = $(".empName").text();
+      $(".zhuti").load("/library/doPerson?empName=" + empName,function () {
+        fenye();
+      });
+    }
+    $("#doliaotian").click(function () {
+      $(".zhuti").load("/websocket/liaotian");
+      $("#isno").val("liaotian");
+
+    });
+
+    $("#grxx").click(function () {
+      var empName = $(".empName").text();
+      $(".zhuti").load("/library/doPerson?empName=" + empName, function () {
+        fenye();
+      });
+      $("#isno").val("gr");
+    });
+
+    $("#donotice").click(function () {
+      var empName = $(".empName").text();
+      $(".zhuti").load("/library/donotice?empName="+empName,function () {
+        connect_notice();
+      });
+    });
+
+    $(".doemp").click(function () {
+      var empName = $(".empName").text();
+      $(".zhuti").load("/library/doemp",function () {
+        fenye();
+      })
+    });
+
+    $(".doAddEmp").click(function () {
+      $(".zhuti").load("/library/doAddEmp");
+    });
+
+    $(".dobooklist").click(function () {
+        $(".zhuti").load("/library/dobooklist",function () {
+          book_fenye();
+        });
+    });
+
+    $(".addBook").click(function () {
+      $(".zhuti").load("/library/addBook");
+    });
+
+    $(".book_sell").click(function () {
+      $(".zhuti").load("/library/book_sell",function () {
+        bingtu();
+      });
+    });
+  });
+    /*$(".zhuti").load("/websocket/liaotian","",function (response,status,xhr) {
+          $(".zhuti").addClass("zhutia");
+          $("#isno").val("liaotian");
+          $(".layui-header").addClass("layui-headera");
+    });*/
+    /*$(".zhuti").addClass("zhutia");
+    $("#isno").val("liaotian")
+    $(".layui-header").addClass("layui-headera");*/
+    /*$(".zhuti").addClass("zhutis");
+    $(".layui-header").addClass("layui-headera");*/
+
+
+
+
+  //JavaScript代码区域
+  /*layui.use(['element','jquery'], function(){
+    var element = layui.element;
+    this.$ = window.$ = layui.jquery;
+
+    $(".own").click(function(){
+      let url = $(this).attr('data-url');
+      $("iframe").attr("src",url);
+    });
+
+  });*/
+
+</script>
+</body>
+</html>

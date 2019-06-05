@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    A:link{text-decoration:none;}
+    A:visited{text-decoration:none;}
+    A:active{text-decoration:none;}
+    body{margin: 0;padding: 0}
+    .container{width: 100%}
+    th,td{text-align: center}
+    table{margin-top: 10px}
+    label{margin: 10px}
+    input[type='button']{margin-left: 5px}
+    .myMP{  margin: 10px;  }
+    .myB{  margin-bottom: 20px;width: 100%  }
+
+    /*分页*/
+    .paging ul li{
+        float: left;
+    }
+    .paging .yeshu{
+        margin: 0px;
+    }
+    .paging ul li a{
+        float: left;
+        /*margin-left: 20px;*/
+        border: 1px solid #e2e2e2;
+        padding: 0 16px;
+        height: 30px;
+        line-height: 28px;
+        margin: 0 -1px 5px 0;
+        background-color: #fff;
+        vertical-align: middle;
+        color: #333;
+        font-size: 12px;
+        text-decoration: none;
+    }
+    .yeshu a{
+        border-radius: 2px;
+        float: left;
+        /*margin-left: 20px;*/
+        border: 1px solid #e2e2e2;
+        padding: 0 16px;
+        height: 28px;
+        line-height: 28px;
+        margin: 0 -1px 5px 0;
+        background-color: #fff;
+        vertical-align: middle;
+        color: #333;
+        font-size: 12px;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .paging ul li a:hover{
+        color: #009688;
+        cursor:pointer;
+    }
+    /*分页END*/
+</style>
+<body>
+<div class="container">
+    <h1>员工管理</h1>
+    <hr>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default">  书籍名称：</button>
+        <div class="btn-group" role="group">
+            <input type="text" class="form-control empNamea" name="book_name" placeholder="书籍名称"/>
+        </div>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default">  作者：</button>
+        <div class="btn-group" role="group">
+            <input type="text" class="form-control empNamea" name="book_authod" placeholder="作者"/>
+        </div>
+    </div>
+    <label>
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default"> 损坏程度：</button>
+            <div class="btn-group" role="group">
+                <select name="book_damage" class="form-control roleID">
+                    <option value="11">请选择</option>
+                    <option value="0">0%</option>
+                    <option value="1">10%</option>
+                    <option value="2">20%</option>
+                    <option value="3">30%</option>
+                    <option value="4">40%</option>
+                    <option value="5">50%</option>
+                    <option value="6">60%</option>
+                    <option value="7">70%</option>
+                    <option value="8">80%</option>
+                    <option value="9">90%</option>
+                    <option value="10">100%</option>
+                </select>
+            </div>
+        </div>
+    </label>
+    <input type="button" name="" id="" value="搜索" th:onclick="selectEmp()" class="btn btn-primary" />
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>书籍编号</th>
+            <th>书籍名称</th>
+            <th>作者</th>
+            <th>价格</th>
+            <th>状态</th>
+            <th>书籍类型</th>
+            <th>损坏程度</th>
+            <th>入库时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody th:class="bookLists">
+        <tr th:each="booka : ${bookList}">
+            <td th:text="${booka.getBook_id()}"></td>
+            <td th:text="${booka.getBook_name()}"></td>
+            <td th:text="${booka.getBook_authod()}"></td>
+            <td th:text="${booka.getBook_price()}">2018-01-13</td>
+            <td th:if="${booka.getBook_state()==0}">正常</td>
+            <td th:if="${booka.getBook_state()==1}">借出</td>
+            <td th:if="${booka.getBook_state()==2}">损坏</td>
+            <td th:text="${booka.getBook_type()}"></td>
+            <td th:text="${booka.getBook_damage()}"></td>
+            <td th:text="${booka.getBook_addtime()}"></td>
+            <td>
+                <a>
+                    <span th:onclick="" class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal"></span>
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a>
+                    <span th:onclick="" class="glyphicon glyphicon-trash" lay-event="del"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="paging">
+        <input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+        <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">
+        <ul>
+            <li><a th:onclick="selectBook(1)">首页</a></li>
+            <li><a th:onclick="|selectBook(${fenye.getCurrentPageNo()-1})|" style="border-radius: 2px 0 0 2px;">上一页</a></li>
+            <li class="yeshu">
+            </li>
+            <li><a th:onclick="|selectBook(${fenye.getCurrentPageNo()+1})|" style="border-radius: 0 2px 2px 0;">下一页</a></li>
+            <li><a th:onclick="|selectBook(${fenye.getTotalPageCount()})|">尾页</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
