@@ -2,7 +2,36 @@ var userName = null;
 var sessionid = $("#sessionid").val();
 var noticeClient = null;
 var recClient = null;
+var stompClientx = null;
 $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
+
+
+$(function () {
+    var empNames = null;
+    var stompClient = null;
+    $.ajax({
+        url:"/websocket/get_userList",
+        type:"GET",
+        dataType:"json",
+        success:function (data) {
+            empNames = data;
+            for (var i = 0; i < empNames.length; i++) {
+                if (empNames[i].emp_username == $(".empName").text()) {
+                    $(".yanzhenge").val("666");
+                    $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
+                    setConnected(true);
+                    $(".now_role").val("yes");
+                    // 订阅聊天室通知
+                    connectWsuser();
+                    // ***************************************************************************************************************
+
+                }
+            }
+        }
+    });
+});
+
+
 function setConnected(connected) {
     $("#connecta").attr({"disabled": connected});
     $("#disconnecta").attr({"disabled":!connected});
@@ -11,6 +40,7 @@ function connectax() {
     $(".yanzhenge").val("666");
     var socket = new SockJS("/socket");
     var stompClient = Stomp.over(socket);
+    stompClientss=stompClient;
     stompClient.connect({},function (frame) {
         $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
         setConnected(true);
@@ -39,8 +69,9 @@ function connectWsuser() {
 }
 
 var noticeSocket = function () {
-    var s = new SockJS("/socket");
-    var stompClient = Stomp.over(s);
+    var socket = new SockJS("/socket");
+    var stompClient = Stomp.over(socket);
+    stompClientss02=stompClient;
     stompClient.connect({}, function () {
         console.log('notice socket connected');
         noticeClient = stompClient.subscribe("/sub/chat", function (data) {
@@ -84,18 +115,19 @@ var noticeSocket = function () {
     });
 }
 var recSocket = function () {
-    var s = new SockJS("/socket");
-    var stompClient = Stomp.over(s);
+    var socket = new SockJS("/socket");
+    var stompClient = Stomp.over(socket);
+    stompClientss01=stompClient;
     stompClient.connect({}, function () {
         console.log('notice socket connected');
         recClient = stompClient.subscribe("/sub/conaa", function (data) {
             var obj = JSON.parse(data.body);
             if (obj.state=="0"){
-                    var htmla01 = "<li><div class=\"tishi\"><p><span>" + obj.srcUser + "</span>&nbsp;加入群聊,当前在线人数:" + obj.numbera + "人</p></div></li>";
-                    $(".record").append(htmla01);
-                    $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
-                    $(".cebianlist").append("<li><img src=\"../images/tou/" + obj.employeea.imgpath + "\" style=\"height: 38px;width: 38px\" class=\"layui-nav-img\"><span>" + obj.employeea.emp_name + "</span></li>");
-                    $(".cebianlist").find("li:last").attr("username", obj.employeea.emp_username);
+                var htmla01 = "<li><div class=\"tishi\"><p><span>" + obj.srcUser + "</span>&nbsp;加入群聊,当前在线人数:" + obj.numbera + "人</p></div></li>";
+                $(".record").append(htmla01);
+                $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
+                $(".cebianlist").append("<li><img src=\"../images/tou/" + obj.employeea.imgpath + "\" style=\"height: 38px;width: 38px\" class=\"layui-nav-img\"><span>" + obj.employeea.emp_name + "</span></li>");
+                $(".cebianlist").find("li:last").attr("username", obj.employeea.emp_username);
             }else if (obj.state=="1") {
                 var htmla01 = "<li><div class=\"tishi\"><p><span>"+obj.srcUser+"</span>&nbsp;已退出群聊,当前在线人数:"+obj.numbera+"人</p></div></li>";
                 $(".record").append(htmla01);
@@ -124,17 +156,19 @@ function dis_callback() {
     stompClient.send("/request/disConnect",{},$(".empName").text());
 }
 function disconnectax() {
-    if (stompClient !=null){
-        $(".cebianlist").children().remove();
-        dis_callback();
-        $(".yanzhenge").val("123");
-        noticeClient.unsubscribe();
-        recClient.unsubscribe();
-        $(".record").append("<li><div class=\"tishi\" style=\"color: #2e6da4;\"><p>连接已断开!</p></div></li>");
-        $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
-        layer.msg('连接已断开', {icon: 5,time:1000});
-        setConnected(false);
-    }
+    stompClientss01.disconnect(function () {
+        stompClientss02.disconnect(function () {
+            $(".cebianlist").children().remove();
+            dis_callback();
+            $(".yanzhenge").val("123");
+            /*noticeClient.unsubscribe();
+            recClient.unsubscribe();*/
+            $(".record").append("<li><div class=\"tishi\" style=\"color: #2e6da4;\"><p>连接已断开!</p></div></li>");
+            $(".Chatarea").scrollTop($(".Chatarea")[0].scrollHeight);
+            layer.msg('连接已断开', {icon: 5,time:1000});
+            setConnected(false);
+        });
+    });
 }
 var connect_callback = function () {
     if (userName==null){

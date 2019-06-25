@@ -1,9 +1,6 @@
 package com.spring.springcloudlibraryproduct.Service;
 
-import com.spring.springcloudlibraryproduct.pojo.attendance;
-import com.spring.springcloudlibraryproduct.pojo.employee;
-import com.spring.springcloudlibraryproduct.pojo.fenye;
-import com.spring.springcloudlibraryproduct.pojo.leave;
+import com.spring.springcloudlibraryproduct.pojo.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,4 +66,19 @@ public interface EmpService {
 
     @RequestMapping(value = "addEmp")
     public int addEmp(employee employee);
+
+    @RequestMapping(value = "get_loanUser",method = RequestMethod.GET)
+    public user get_loanUser(@RequestParam(value = "loan_id",required = false)Integer loan_id);
+
+    @RequestMapping(value = "getEmp_wageCount",method = RequestMethod.GET)
+    public int getEmp_wageCount(@RequestParam(value = "entry_starttime",required = false)String entry_starttime
+            ,@RequestParam(value = "entry_prefixtime",required = false)String entry_prefixtime
+            ,@RequestParam(value = "empName",required = false)String empName
+            ,@RequestParam(value = "emp_id", required = false)Integer emp_id);
+
+    @RequestMapping(value = "getEmp_wage",method = RequestMethod.GET)
+    public List<attendance> getEmp_wage(@RequestParam(value = "entry_starttime",required = false)String entry_starttime
+            ,@RequestParam(value = "entry_prefixtime",required = false)String entry_prefixtime
+            ,@RequestParam(value = "empName",required = false)String empName
+            ,@RequestParam(value = "emp_id", required = false)Integer emp_id);
 }

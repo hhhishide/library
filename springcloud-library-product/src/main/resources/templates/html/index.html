@@ -108,7 +108,7 @@
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
         <li class="layui-nav-item"><a href="javascript:void(0)" id="grxx">个人信息</a></li>
           <!--员工管理-->
-          <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('员工管理员') || hasAnyAuthority('超级管理员')">
+          <li class="layui-nav-item layui-nav-itemed" th:if="${session.USER.getEmp_role()==5 || session.USER.getEmp_role()==7}">
               <div>
                   <a class="" href="javascript:void(0)">员工管理</a>
                   <dl class="layui-nav-child">
@@ -164,8 +164,8 @@
           <div>
             <a class="" href="javascript:;">借出归还管理</a>
             <dl class="layui-nav-child">
-              <dd><a href="javascript:;">借出归还记录</a></dd>
-              <dd><a href="javascript:;">新增借出账单</a></dd>
+              <dd><a href="javascript:;" class="loanList">借出归还记录</a></dd>
+              <dd><a href="javascript:;" class="loan_book">新增借出账单</a></dd>
               <dd><a href="javascript:;">图书归还</a></dd>
             </dl>
           </div>
@@ -185,7 +185,24 @@
             <dd><a href="">超链接</a></dd>
           </dl>
         </li>-->
-
+        <!--借出归还管理-->
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="hasAnyAuthority('财务管理员') || hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">财务后勤管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;" class="do_jidu">查看季度账单</a></dd>
+              <dd><a href="javascript:;">员工薪资发放</a></dd>
+              <dd><a href="javascript:;">查看员工打卡情况</a></dd>
+            </dl>
+          </div>
+        </li>
+        <li class="layui-nav-item layui-nav-itemed" sec:authorize="!hasAnyAuthority('财务管理员') && !hasAnyAuthority('超级管理员')">
+          <div>
+            <a class="" href="javascript:;">财务后勤管理<span class="glyphicon glyphicon-lock suo"></span></a>
+            <span class="layui-nav-child">
+            </span>
+          </div>
+        </li>
         <li class="layui-nav-item"><a href="">云市场</a></li>
         <li class="layui-nav-item"><a href="">发布商品</a></li>
         <li class="layui-nav-item"><a href="javascript:void(0)" id="doliaotian">聊天</a></li>
@@ -210,7 +227,11 @@
 <script th:src="@{/js/fenye.js}"></script>
 <script th:src="@{/js/notice.js}"></script>
 <script th:src="@{/js/emp.js}"></script>
-<script th:src="@{/js/bingtu.js}"></script>
+<script th:src="@{https://code.highcharts.com.cn/highcharts/highcharts.js}"></script>
+<script th:src="@{https://code.highcharts.com.cn/highcharts/highcharts-3d.js}"></script>
+<!--
+<script th:src="@{https://code.highcharts.com.cn/highcharts/modules/exporting.js}"></script>
+-->
 <!--<script th:src="@{/js/liaotian.js}"></script>-->
 <script>
   /*日期*/
@@ -276,6 +297,9 @@
   /**
    * 预先加载好websocket
    */
+  var stompClientss = null;
+  var stompClientss01 = null;
+  var stompClientss02 = null;
   var stompClient = null;
   function connect() {
     var socket = new SockJS("/socket");
@@ -284,6 +308,8 @@
       connect_callback();
     });
   }
+
+
   var conSocket = function () {
     var s = new SockJS("/socket");
     var stompClient = Stomp.over(s);
@@ -323,7 +349,7 @@
       });
     }
     $("#doliaotian").click(function () {
-      $(".zhuti").load("/websocket/liaotian");
+      $(".zhuti").load("/websocket/liaotian?empName="+$(".empName").text());
       $("#isno").val("liaotian");
 
     });
@@ -346,7 +372,7 @@
     $(".doemp").click(function () {
       var empName = $(".empName").text();
       $(".zhuti").load("/library/doemp",function () {
-        fenye();
+        emp_fenye();
       })
     });
 
@@ -365,8 +391,22 @@
     });
 
     $(".book_sell").click(function () {
-      $(".zhuti").load("/library/book_sell",function () {
-        bingtu();
+      $(".zhuti").load("/library/book_sell");
+    });
+
+    $(".loan_book").click(function () {
+      $(".zhuti").load("/library/do_loanBook");
+    });
+
+    $(".loanList").click(function () {
+      $(".zhuti").load("/library/loanList",function () {
+        loan_fenye();
+      });
+    });
+
+    $(".do_jidu").click(function () {
+      $(".zhuti").load("/library/do_jidu",function () {
+        loan_fenye();
       });
     });
   });

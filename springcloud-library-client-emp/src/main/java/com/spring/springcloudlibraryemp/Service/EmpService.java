@@ -1,9 +1,6 @@
 package com.spring.springcloudlibraryemp.Service;
 
-import com.spring.springcloudlibraryemp.pojo.attendance;
-import com.spring.springcloudlibraryemp.pojo.employee;
-import com.spring.springcloudlibraryemp.pojo.fenye;
-import com.spring.springcloudlibraryemp.pojo.leave;
+import com.spring.springcloudlibraryemp.pojo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,4 +36,11 @@ public interface EmpService {
     public String modaka(String datetime,Integer empid);
 
     public String endaka(String datetime,Integer empid);
+
+    public user get_loanUser(Integer loan_id);
+
+    public int getEmp_wageCount(String entry_starttime,String entry_prefixtime,String empName,Integer emp_id);
+
+    public List<attendance> getEmp_wage(String entry_starttime,String entry_prefixtime,String empName,Integer emp_id);
+
 }

@@ -2,10 +2,8 @@ package com.spring.springcloudlibraryemp.Controller;
 
 import com.spring.springcloudlibraryemp.Service.EmpService;
 import com.spring.springcloudlibraryemp.Service.EmpServiceImpl;
-import com.spring.springcloudlibraryemp.pojo.attendance;
-import com.spring.springcloudlibraryemp.pojo.employee;
-import com.spring.springcloudlibraryemp.pojo.fenye;
-import com.spring.springcloudlibraryemp.pojo.leave;
+import com.spring.springcloudlibraryemp.pojo.*;
+import jdk.nashorn.internal.ir.ReturnNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,11 +60,11 @@ public class EmpController {
         if (isdaka==0) {
             empServiceimpl.adddaka(datetime, empid);
         }
-        if(Integer.parseInt(timeas[0])<=12){
+        if(Integer.parseInt(timeas[0])<12){
             if(empServiceimpl.modaka(datetime,empid)!=null){
                 return 11;
             }
-        }else if(Integer.parseInt(timeas[0])>12){
+        }else if(Integer.parseInt(timeas[0])>=12){
             if(empServiceimpl.endaka(datetime,empid)!=null){
                 return 22;
             }
@@ -125,6 +123,30 @@ public class EmpController {
     @RequestMapping(value = "addEmp")
     public int addEmp(@RequestBody employee employee){
         return empServiceimpl.addEmp(employee);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "get_loanUser",method = RequestMethod.GET)
+    public user get_loanUser(@RequestParam(value = "loan_id",required = false)Integer loan_id){
+        return empServiceimpl.get_loanUser(loan_id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getEmp_wageCount",method = RequestMethod.GET)
+    public int getEmp_wageCount(@RequestParam(value = "entry_starttime",required = false)String entry_starttime
+            ,@RequestParam(value = "entry_prefixtime",required = false)String entry_prefixtime
+            ,@RequestParam(value = "empName",required = false)String empName
+            ,@RequestParam(value = "emp_id", required = false)Integer emp_id){
+        return empServiceimpl.getEmp_wageCount(entry_starttime,entry_prefixtime,empName,emp_id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getEmp_wage",method = RequestMethod.GET)
+    public List<attendance> getEmp_wage(@RequestParam(value = "entry_starttime",required = false)String entry_starttime
+            ,@RequestParam(value = "entry_prefixtime",required = false)String entry_prefixtime
+            ,@RequestParam(value = "empName",required = false)String empName
+            ,@RequestParam(value = "emp_id", required = false)Integer emp_id){
+        return empServiceimpl.getEmp_wage(entry_starttime,entry_prefixtime,empName,emp_id);
     }
 
 }

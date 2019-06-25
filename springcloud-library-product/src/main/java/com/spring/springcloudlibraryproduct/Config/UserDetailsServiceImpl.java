@@ -30,8 +30,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("loadUserByUsername.................................");
         employee empByname = empService.getEmpByname(username);
+        if (empByname==null) {
+            throw new UsernameNotFoundException("admin: " + username + " do not exist!");
+        }
         return changeToUser(empByname);
     }
+
 
     public UserDetails changeToUser(employee employee){
         System.out.println("进入changeToUser.........");

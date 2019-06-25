@@ -1,5 +1,6 @@
 package com.spring.springcloudlibrarybook.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -13,6 +14,24 @@ public class attendance {
     private int morning_state;
     private int evening_state;
     private String Ondate;
+    private String emp_name;
+    private BigDecimal emp_wage;
+
+    public BigDecimal getEmp_wage() {
+        return emp_wage;
+    }
+
+    public void setEmp_wage(BigDecimal emp_wage) {
+        this.emp_wage = emp_wage;
+    }
+
+    public String getEmp_name() {
+        return emp_name;
+    }
+
+    public void setEmp_name(String emp_name) {
+        this.emp_name = emp_name;
+    }
 
     public String getOndate() {
         return Ondate;

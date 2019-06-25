@@ -92,4 +92,14 @@ public interface EmpMapper {
     public String modaka(@Param("datetime")String datetime,@Param("empid")Integer empid);
 
     public String endaka(@Param("datetime")String datetime,@Param("empid")Integer empid);
+
+    public user get_loanUser(@Param(value = "loan_id")Integer loan_id);
+
+    public int getEmp_wageCount(@Param("entry_starttime") String entry_starttime
+            ,@Param("entry_prefixtime")String entry_prefixtime,@Param("empName")String empName
+            ,@Param("emp_id")Integer emp_id);
+
+    public List<attendance> getEmp_wage(@Param("entry_starttime") String entry_starttime
+            ,@Param("entry_prefixtime")String entry_prefixtime,@Param("empName")String empName
+            ,@Param("emp_id")Integer emp_id);
 }

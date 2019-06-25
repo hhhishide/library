@@ -67,20 +67,20 @@
     <div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default">  书籍名称：</button>
         <div class="btn-group" role="group">
-            <input type="text" class="form-control empNamea" name="book_name" placeholder="书籍名称"/>
+            <input type="text" class="form-control book_name" name="book_name" placeholder="书籍名称"/>
         </div>
     </div>
     <div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default">  作者：</button>
         <div class="btn-group" role="group">
-            <input type="text" class="form-control empNamea" name="book_authod" placeholder="作者"/>
+            <input type="text" class="form-control book_authod" name="book_authod" placeholder="作者"/>
         </div>
     </div>
     <label>
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default"> 损坏程度：</button>
             <div class="btn-group" role="group">
-                <select name="book_damage" class="form-control roleID">
+                <select name="book_damage" class="form-control roleID book_damage">
                     <option value="11">请选择</option>
                     <option value="0">0%</option>
                     <option value="1">10%</option>
@@ -97,7 +97,7 @@
             </div>
         </div>
     </label>
-    <input type="button" name="" id="" value="搜索" th:onclick="selectEmp()" class="btn btn-primary" />
+    <input type="button" name="" id="" value="搜索" th:onclick="select_Book()" class="btn btn-primary" />
     <table class="table table-hover table-bordered table-striped">
         <thead>
         <tr>

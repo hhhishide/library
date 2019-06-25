@@ -153,6 +153,161 @@ function book_fenye() {
 }
 
 
+// 分页JS
+function emp_fenye() {
+    $(".yeshu").html("");
+    var pagecount = $(".fen_count").val();
+    var fen_PageNo = $(".fen_PageNo").val();
+    fen_PageNo = parseInt(fen_PageNo);
+    // 如果当前页为前三页
+    if(fen_PageNo<=3){
+        if (parseInt(pagecount)<=5) {
+            if (parseInt(pagecount) == 4) {
+                for (var i = 0; i < 4; i++) {
+                    if ((i + 1) == fen_PageNo) {
+                        $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                    } else {
+                        $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                    }
+                }
+            } else {
+                for (var i = 0; i < parseInt(pagecount); i++) {
+                    if ((i + 1) == fen_PageNo) {
+                        $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                    } else {
+                        $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                    }
+                }
+            }
+        }else {
+            for (var i = 0;i < 4;i++){
+                if((i+1)==fen_PageNo){
+                    $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                }else {
+                    $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                }
+            }
+            $(".yeshu").append("<a>...</a>");
+            $(".yeshu").append("<a onclick=\"selectEmp(" + parseInt(pagecount) + ")\">"+parseInt(pagecount)+"</a>");
+        }
+    }else if ((pagecount - fen_PageNo)<3) {
+        if (parseInt(pagecount)>5) {
+            $(".yeshu").append("<a onclick=\"selectEmp(1)\">1</a>");
+            $(".yeshu").append("<a>...</a>");
+            for (var i = 0; i < (fen_PageNo - (parseInt(pagecount - 4))); i++) {
+                if ((parseInt(pagecount) - 4 + (i + 1)) == fen_PageNo) {
+                    $(".yeshu").append("<a onclick=\"selectEmp("
+                        + ((parseInt(pagecount) - 4) + (i + 1)) + ")\" style=\"background-color: #009688;color: #fff;\">" + ((parseInt(pagecount) - 4) + (i + 1)) + "</a>");
+                } else {
+                    $(".yeshu").append("<a onclick=\"selectEmp("
+                        + ((parseInt(pagecount) - 4) + (i + 1)) + ")\">" + ((parseInt(pagecount) - 4) + (i + 1)) + "</a>");
+                }
+            }
+            for (var j = 0; j < parseInt(pagecount) - fen_PageNo; j++) {
+                $(".yeshu").append("<a onclick=\"selectEmp(" + (fen_PageNo + (j + 1)) + ")\">" + (fen_PageNo + (j + 1)) + "</a>");
+            }
+        }else{
+            for (var i =0; i < parseInt(pagecount);i++){
+                if ((i + 1) == fen_PageNo) {
+                    $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                } else {
+                    $(".yeshu").append("<a onclick=\"selectEmp(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                }
+            }
+        }
+    }else{
+        $(".yeshu").append("<a onclick=\"selectEmp(1)\">1</a><a>...</a>");
+        for (var i = fen_PageNo-2; i<=fen_PageNo+1;i++){
+            if (i==fen_PageNo){
+                $(".yeshu").append("<a onclick=\"selectEmp(" + i + ")\" style=\"background-color: #009688;color: #fff;\">" + i + "</a>");
+            }else{
+                $(".yeshu").append("<a onclick=\"selectEmp("+ i +")\">" + i + "</a>");
+            }
+        }
+        $(".yeshu").append("<a>...</a>");
+        $(".yeshu").append("<a onclick=\"selectEmp(" + parseInt(pagecount) + ")\">"+parseInt(pagecount)+"</a>");
+        /*$(".yeshu").append("<a href=\"#\">" + (fen_PageNo + 1) + "</a>");*/
+    }
+}
+
+
+// 分页JS
+function loan_fenye() {
+    $(".yeshu").html("");
+    var pagecount = $(".fen_count").val();
+    var fen_PageNo = $(".fen_PageNo").val();
+    fen_PageNo = parseInt(fen_PageNo);
+    // 如果当前页为前三页
+    if(fen_PageNo<=3){
+        if (parseInt(pagecount)<=5) {
+            if (parseInt(pagecount) == 4) {
+                for (var i = 0; i < 4; i++) {
+                    if ((i + 1) == fen_PageNo) {
+                        $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                    } else {
+                        $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                    }
+                }
+            } else {
+                for (var i = 0; i < parseInt(pagecount); i++) {
+                    if ((i + 1) == fen_PageNo) {
+                        $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                    } else {
+                        $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                    }
+                }
+            }
+        }else {
+            for (var i = 0;i < 4;i++){
+                if((i+1)==fen_PageNo){
+                    $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                }else {
+                    $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                }
+            }
+            $(".yeshu").append("<a>...</a>");
+            $(".yeshu").append("<a onclick=\"selectLoan(" + parseInt(pagecount) + ")\">"+parseInt(pagecount)+"</a>");
+        }
+    }else if ((pagecount - fen_PageNo)<3) {
+        if (parseInt(pagecount)>5) {
+            $(".yeshu").append("<a onclick=\"selectLoan(1)\">1</a>");
+            $(".yeshu").append("<a>...</a>");
+            for (var i = 0; i < (fen_PageNo - (parseInt(pagecount - 4))); i++) {
+                if ((parseInt(pagecount) - 4 + (i + 1)) == fen_PageNo) {
+                    $(".yeshu").append("<a onclick=\"selectLoan("
+                        + ((parseInt(pagecount) - 4) + (i + 1)) + ")\" style=\"background-color: #009688;color: #fff;\">" + ((parseInt(pagecount) - 4) + (i + 1)) + "</a>");
+                } else {
+                    $(".yeshu").append("<a onclick=\"selectLoan("
+                        + ((parseInt(pagecount) - 4) + (i + 1)) + ")\">" + ((parseInt(pagecount) - 4) + (i + 1)) + "</a>");
+                }
+            }
+            for (var j = 0; j < parseInt(pagecount) - fen_PageNo; j++) {
+                $(".yeshu").append("<a onclick=\"selectLoan(" + (fen_PageNo + (j + 1)) + ")\">" + (fen_PageNo + (j + 1)) + "</a>");
+            }
+        }else{
+            for (var i =0; i < parseInt(pagecount);i++){
+                if ((i + 1) == fen_PageNo) {
+                    $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\" style=\"background-color: #009688;color: #fff;\">" + (i + 1) + "</a>");
+                } else {
+                    $(".yeshu").append("<a onclick=\"selectLoan(" + (i + 1) + ")\">" + (i + 1) + "</a>");
+                }
+            }
+        }
+    }else{
+        $(".yeshu").append("<a onclick=\"selectLoan(1)\">1</a><a>...</a>");
+        for (var i = fen_PageNo-2; i<=fen_PageNo+1;i++){
+            if (i==fen_PageNo){
+                $(".yeshu").append("<a onclick=\"selectLoan(" + i + ")\" style=\"background-color: #009688;color: #fff;\">" + i + "</a>");
+            }else{
+                $(".yeshu").append("<a onclick=\"selectLoan("+ i +")\">" + i + "</a>");
+            }
+        }
+        $(".yeshu").append("<a>...</a>");
+        $(".yeshu").append("<a onclick=\"selectLoan(" + parseInt(pagecount) + ")\">"+parseInt(pagecount)+"</a>");
+        /*$(".yeshu").append("<a href=\"#\">" + (fen_PageNo + 1) + "</a>");*/
+    }
+}
+
 function doPerson(numbera) {
     var chuqdate01 = $("#chuqdate01").val();
     var chuqdate02 = $("#chuqdate02").val();
@@ -200,6 +355,12 @@ function doPerson(numbera) {
                 }
                 if (data.attendancelist[i].morning_state==2){
                     m_state = "未打卡";
+                }
+                if (data.attendancelist[i].morning_time==null){
+                    data.attendancelist[i].morning_time="未打卡";
+                }
+                if (data.attendancelist[i].evening_time==null){
+                    data.attendancelist[i].evening_time="未打卡";
                 }
                 $(".attendList").append("<tr>\n" +
                     "<td>" + data.attendancelist[i].id +"</td>\n"+
@@ -396,6 +557,51 @@ function addBook() {
             }else{
                 layer.msg('添加失败!', {icon: 5});
             }
+        }
+    });
+}
+
+function select_Book() {
+    var book_name = $(".book_name").val();
+    var book_authod = $(".book_authod").val();
+    var book_damage = $(".book_damage").val();
+    $.ajax({
+        url: "/library/select_book",
+        type:"GET",
+        data:{book_name:book_name,book_authod:book_authod,book_damage:book_damage},
+        dataType:"json",
+        success:function (data) {
+            $(".bookLists").html("");
+            for (var i = 0;i <data.bookList.length; i++){
+                if (data.bookList[i].book_state=="0"){
+                    data.bookList[i].book_state="正常";
+                }else if (data.bookList[i].book_state=="1"){
+                    data.bookList[i].book_state="借出";
+                }else if (data.bookList[i].book_state=="2"){
+                    data.bookList[i].book_state="损坏";
+                }
+                $(".bookLists").append("<tr>\n" +
+                    "            <td>"+data.bookList[i].book_id+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_name+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_authod+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_addtime+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_state+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_type+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_damage+"</td>\n" +
+                    "            <td>"+data.bookList[i].book_addtime+"</td>\n" +
+                    "            <td>\n" +
+                    "                <a>\n" +
+                    "                    <span onclick=\"\" class=\"glyphicon glyphicon-pencil\" data-toggle=\"modal\" data-target=\"#myModal\"></span>\n" +
+                    "                </a>&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                <a>\n" +
+                    "                    <span onclick=\"\" class=\"glyphicon glyphicon-trash\" lay-event=\"del\"></span>\n" +
+                    "                </a>\n" +
+                    "            </td>\n" +
+                    "        </tr>");
+            }
+            $(".fen_count").val(data.fenye.totalPageCount);
+            $(".fen_PageNo").val(data.fenye.currentPageNo);
+            book_fenye();
         }
     });
 }

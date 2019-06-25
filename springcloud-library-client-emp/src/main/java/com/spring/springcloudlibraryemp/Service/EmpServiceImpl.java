@@ -1,10 +1,8 @@
 package com.spring.springcloudlibraryemp.Service;
 
 import com.spring.springcloudlibraryemp.Dao.EmpMapper;
-import com.spring.springcloudlibraryemp.pojo.attendance;
-import com.spring.springcloudlibraryemp.pojo.employee;
-import com.spring.springcloudlibraryemp.pojo.fenye;
-import com.spring.springcloudlibraryemp.pojo.leave;
+import com.spring.springcloudlibraryemp.pojo.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +97,19 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public String endaka(String datetime,Integer empid) {
         return empMapper.endaka(datetime,empid);
+    }
+
+    @Override
+    public user get_loanUser(Integer loan_id) {
+        return empMapper.get_loanUser(loan_id);
+    }
+
+    @Override
+    public int getEmp_wageCount(String entry_starttime, String entry_prefixtime, String empName, Integer emp_id) {
+        return empMapper.getEmp_wageCount(entry_starttime,entry_prefixtime,empName,emp_id);
+    }
+    @Override
+    public List<attendance> getEmp_wage(String entry_starttime, String entry_prefixtime, String empName, Integer emp_id) {
+        return empMapper.getEmp_wage(entry_starttime,entry_prefixtime,empName,emp_id);
     }
 }

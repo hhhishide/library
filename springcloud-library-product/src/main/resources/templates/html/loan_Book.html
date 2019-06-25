@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<style>
+    .addBook_content{
+        border: 1px solid #d4d4d4;
+        text-align: center;
+        margin: 50px 50px 40px 50px;
+        padding: 30px 40px 20px 40px;
+    }
+
+
+</style>
+<body>
+<h1 style="text-align: center;margin-top: 20px;margin-bottom: -30px;">新增借出账单</h1>
+<div th:class="addBook_content">
+    <div style="margin: 0 auto;display: inline-block;">
+        <form id="addEmp_form" class="layui-form layui-form-pane"  method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">书籍编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input book_id" name="book_id" lay-verify="required" placeholder="请输入书籍编号" autocomplete="off" th:onblur="get_book()">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">书名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input book_name" name="book_name" disabled="disabled" lay-verify="required" placeholder="书名" autocomplete="off" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">归还人编号:</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input loan_id" name="loan_id" lay-verify="required" placeholder="请输入归还人编号" autocomplete="off" th:onblur="get_loanUser()">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">归还人姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input loan_name" name="loan_name" disabled="disabled" lay-verify="required" placeholder="归还人姓名" autocomplete="off" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">借出时间:</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="loan_starttime" id="test4" placeholder="点击选择时间">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">归还时间:</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="loan_overtime" id="test5" placeholder="点击选择时间">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">期限</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" class="layui-input" name="loan_number" placeholder="天数" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">处理人:</label>
+                <div class="layui-input-inline">
+                    <input type="text"  id="username" disabled="disabled" th:value="${session.USER.getEmp_username()}" class="layui-input">
+                </div>
+            </div>
+            <span class="layui-btn" th:onclick="loan_Book()">&nbsp;提&nbsp;交&nbsp;信&nbsp;息&nbsp;</span>
+            <input type="hidden" th:value="${session.USER.getEmp_username()}" name="uname">
+        </form>
+    </div>
+</div>
+<script th:src="@{/js/jquery-1.12.4.js}"></script>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/larry.js}"></script>
+<script th:src="@{/js/book.js}"></script>
+<script>
+
+</script>
+</body>
+</html>

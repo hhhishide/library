@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"><link rel="icon" href="https://jscdn.com.cn/highcharts/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+    .bingtu{
+        margin-top: 20px;
+    }
+    .bingtu_content{
+        width: 98%;
+        height: 320px;
+        border: 1px solid red;
+        margin-left: 10px;
+        border: 1px solid #dee3e0;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .bingtu_ding{
+        margin-left: 10px;
+        width: 98%;
+        height: 32px;
+        background-color: #f6f6f6;
+        border: 1px solid #dee3e0;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .bingtu_ding span{
+        display: inline-block;
+        margin-left: 12px;
+        margin-top: 3px;
+        font-size: 17px;
+        color: #777;
+    }
+
+    /*分页*/
+    .paging ul li{
+        float: left;
+    }
+    .paging .yeshu{
+        margin: 0px;
+    }
+    .paging ul li a{
+        float: left;
+        /*margin-left: 20px;*/
+        border: 1px solid #e2e2e2;
+        padding: 0 16px;
+        height: 30px;
+        line-height: 28px;
+        margin: 0 -1px 5px 0;
+        background-color: #fff;
+        vertical-align: middle;
+        color: #333;
+        font-size: 12px;
+        text-decoration: none;
+    }
+    .yeshu a{
+        border-radius: 2px;
+        float: left;
+        /*margin-left: 20px;*/
+        border: 1px solid #e2e2e2;
+        padding: 0 16px;
+        height: 28px;
+        line-height: 28px;
+        margin: 0 -1px 5px 0;
+        background-color: #fff;
+        vertical-align: middle;
+        color: #333;
+        font-size: 12px;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .paging ul li a:hover{
+        color: #009688;
+        cursor:pointer;
+    }
+    /*分页END*/
+
+    .glyphicon:hover{
+        cursor:pointer;
+    }
+</style>
+<body>
+<div class="bingtu">
+    <div class="bingtu_ding">
+        <span>YueDuZhangDan</span>
+    </div>
+    <div class="bingtu_content">
+        <div id="container02" style="height: 300px;width: 48%;display: inline-block;"></div>
+        <div id="container01" style="height: 300px;width: 48%;display: inline-block;"></div>
+    </div>
+</div>
+<hr>
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">书籍出售记录</li>
+        <li>书籍借出归还记录</li>
+    </ul>
+    <div class="layui-tab-content container">
+        <div class="layui-tab-item">
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>记录编号</th>
+                    <th>书名</th>
+                    <th>类型</th>
+                    <th>作者</th>
+                    <th>出售时间</th>
+                    <th>价格</th>
+                    <th>处理人</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody th:class="booksell">
+                <tr th:each="booksella : ${booksell}">
+                    <td th:text="${booksella.getId()}"></td>
+                    <td th:text="${booksella.getBook_name()}"></td>
+                    <td th:text="${booksella.getBook_type()}"></td>
+                    <td th:text="${booksella.getAuthod()}"></td>
+                    <td th:text="${booksella.getSell_time()}"></td>
+                    <td th:text="${booksella.getPrice()}"></td>
+                    <td th:text="${booksella.getHandler()}"></td>
+                    <td>
+                        <a>
+                            <span class="glyphicon glyphicon-trash" lay-event="del" title="删除"></span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="paging">
+                <input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+                <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">
+                <ul>
+                    <li><a>首页</a></li>
+                    <li><a style="border-radius: 2px 0 0 2px;">上一页</a></li>
+                    <li class="yeshu">
+                        <a>1</a>
+                        <a>2</a>
+                        <a>3</a>
+                        <a>4</a>
+                    </li>
+                    <li><a style="border-radius: 0 2px 2px 0;">下一页</a></li>
+                    <li><a>尾页</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="panel-body form-inline">
+                <label>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">  借出时间：</button>
+                        <div class="btn-group" role="group">
+                            <input type="date" class="form-control loan_loantimeP">
+                            <span>至</span>
+                            <input type="date" class="form-control loan_loantimeS">
+                        </div>
+                    </div>
+                </label>
+                <div class="btn-group empname_select" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default">  书籍名称：</button>
+                    <div class="btn-group" role="group">
+                        <input type="text" class="form-control book_name" placeholder="书籍名称"/>
+                    </div>
+                </div>
+                <input type="button" name="" id="" value="搜索" th:onclick="selectLoan()" class="btn btn-primary" />
+            </div>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>书籍名称</th>
+                    <th>归还人姓名</th>
+                    <th>借出时间</th>
+                    <th>归还时间</th>
+                    <th>期限</th>
+                    <th>联系方式</th>
+                    <th>处理人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody th:class="bookloanList">
+                <tr th:each="bookloana : ${bookloanList}">
+                    <td th:text="${bookloana.getLoan_id()}"></td>
+                    <td th:text="${bookloana.getBookName()}"></td>
+                    <td th:text="${bookloana.getLoan_userName()}"></td>
+                    <td th:text="${bookloana.getLoan_loantime()}">2018-01-13</td>
+                    <td th:text="${bookloana.getLoan_returntime()}">15875722222</td>
+                    <td th:text="${bookloana.getLoan_deadline()+'天'}">15875722222</td>
+                    <td th:text="${bookloana.getUser_phone()}">15875722222</td>
+                    <td th:text="${bookloana.getLoan_handler()}">15875722222</td>
+                    <td th:if="${bookloana.getLoan_state()==0}">借出中</td>
+                    <td th:if="${bookloana.getLoan_state()==1}">已归还</td>
+                    <td>
+                        <a th:if="${bookloana.getLoan_state()!=1}">
+                            <span class="glyphicon glyphicon-ok" title="归还" th:onclick="|return_book(${bookloana.getLoan_id()})|"></span>
+                        </a>&nbsp;&nbsp;&nbsp;
+                        <span th:if="${bookloana.getLoan_state()==1}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a>
+                            <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" title="修改"></span>
+                        </a>&nbsp;&nbsp;&nbsp;
+                        <a>
+                            <span class="glyphicon glyphicon-trash" lay-event="del" title="删除"></span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="paging">
+                <input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+                <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">
+                <ul>
+                    <li><a th:onclick="selectLoan(1)">首页</a></li>
+                    <li><a th:onclick="|selectLoan(${fenye.getCurrentPageNo()-1})|" style="border-radius: 2px 0 0 2px;">上一页</a></li>
+                    <li class="yeshu">
+                    </li>
+                    <li><a th:onclick="|selectLoan(${fenye.getCurrentPageNo()+1})|" style="border-radius: 0 2px 2px 0;">下一页</a></li>
+                    <li><a th:onclick="|selectLoan(${fenye.getTotalPageCount()})|">尾页</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/book.js}"></script>
+<script th:src="@{/js/bingtu.js}"></script>
+</body>
+</html>

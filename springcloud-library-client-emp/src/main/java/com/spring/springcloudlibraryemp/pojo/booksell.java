@@ -1,7 +1,6 @@
 package com.spring.springcloudlibraryemp.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 书籍出售类
@@ -11,8 +10,17 @@ public class booksell {
     private String book_name;
     private int book_type;
     private String authod;
-    private Date sell_time;
+    private String sell_time;
     private BigDecimal price;
+    private String handler;
+
+    public String getHandler() {
+        return handler;
+    }
+
+    public void setHandler(String handler) {
+        this.handler = handler;
+    }
 
     public int getId() {
         return id;
@@ -46,11 +54,11 @@ public class booksell {
         this.authod = authod;
     }
 
-    public Date getSell_time() {
+    public String getSell_time() {
         return sell_time;
     }
 
-    public void setSell_time(Date sell_time) {
+    public void setSell_time(String sell_time) {
         this.sell_time = sell_time;
     }
 

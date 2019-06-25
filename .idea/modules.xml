@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/springcloud-euerka-7001/springcloud-euerka-7001.iml" filepath="$PROJECT_DIR$/springcloud-euerka-7001/springcloud-euerka-7001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-euerka-7002/springcloud-euerka-7002.iml" filepath="$PROJECT_DIR$/springcloud-euerka-7002/springcloud-euerka-7002.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-client-book/springcloud-library-client-book.iml" filepath="$PROJECT_DIR$/springcloud-library-client-book/springcloud-library-client-book.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-client-emp/springcloud-library-client-emp.iml" filepath="$PROJECT_DIR$/springcloud-library-client-emp/springcloud-library-client-emp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-client-records/springcloud-library-client-records.iml" filepath="$PROJECT_DIR$/springcloud-library-client-records/springcloud-library-client-records.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-finance/springcloud-library-finance.iml" filepath="$PROJECT_DIR$/springcloud-library-finance/springcloud-library-finance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-notice/springcloud-library-notice.iml" filepath="$PROJECT_DIR$/springcloud-library-notice/springcloud-library-notice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-library-product/springcloud-library-product.iml" filepath="$PROJECT_DIR$/springcloud-library-product/springcloud-library-product.iml" />
+    </modules>
+  </component>
+</project>

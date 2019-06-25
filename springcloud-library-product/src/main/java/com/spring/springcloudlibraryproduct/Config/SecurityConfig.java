@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import sun.plugin.liveconnect.SecurityContextHelper;
@@ -25,6 +26,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @EnableWebSecurity
@@ -36,6 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private EmpService empService;
+
+    private static List<Object> userlist;
+
     /*@Autowired
     private libraryServiceImpl libraryService;*/
 
@@ -53,8 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/library/dologin");
                     }
                 }).successHandler(new AuthenticationSuccessHandler() {
+                    // 方法上锁，确保每次只能有一个用户进入
                     @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+                    public synchronized void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
                             throws IOException, ServletException {
                         logger.info("认证成功!");
                         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -66,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         WebSocketController.getSessionsSet().put(id,username);
                         // END
                         employee empByname = empService.getEmpByname(username);
+                        //request.getSession().setAttribute("now_User",sessionRegistry.getAllPrincipals().get(sessionRegistry.getAllPrincipals().size()));
                         request.getSession().setAttribute("USER", empByname);
                         response.sendRedirect("/library/doindex");
                     }

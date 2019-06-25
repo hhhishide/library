@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        A:link{text-decoration:none;}
+        A:visited{text-decoration:none;}
+        A:active{text-decoration:none;}
+        body{margin: 0;padding: 0}
+        .container{width: 100%}
+        th,td{text-align: center}
+        table{margin-top: 10px}
+        label{margin: 10px}
+        input[type='button']{margin-left: 5px}
+        .myMP{  margin: 10px;  }
+        .myB{  margin-bottom: 20px;width: 100%  }
+
+        /*分页*/
+        .paging ul li{
+            float: left;
+        }
+        .paging .yeshu{
+            margin: 0px;
+        }
+        .paging ul li a{
+            float: left;
+            /*margin-left: 20px;*/
+            border: 1px solid #e2e2e2;
+            padding: 0 16px;
+            height: 30px;
+            line-height: 28px;
+            margin: 0 -1px 5px 0;
+            background-color: #fff;
+            vertical-align: middle;
+            color: #333;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .yeshu a{
+            border-radius: 2px;
+            float: left;
+            /*margin-left: 20px;*/
+            border: 1px solid #e2e2e2;
+            padding: 0 16px;
+            height: 28px;
+            line-height: 28px;
+            margin: 0 -1px 5px 0;
+            background-color: #fff;
+            vertical-align: middle;
+            color: #333;
+            font-size: 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .paging ul li a:hover{
+            color: #009688;
+            cursor:pointer;
+        }
+        /*分页END*/
+
+        .glyphicon:hover{
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- 修改模态框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改员工</h4>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        员工编号 <input id="ID" class="form-control" type="text" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        姓名 <input id="name" class="form-control" type="text" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        员工职位 <input id="qingjia" class="form-control" type="text" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        入职时间 <input id="data" class="form-control" type="date" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        性别 <input id="sex" class="form-control" type="text" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 col-md-offset-1 myMP">
+                        联系电话 <input id="phone" class="form-control" type="text" placeholder=""/>
+                    </div>
+                    <div class="col-md-11 myB ">
+                        <input class="btn btn-primary form-control" type="submit" value="保存"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer ">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>借出归还信息</h1>
+    <hr>
+    <div class="panel-body form-inline">
+        <label>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default">  借出时间：</button>
+                <div class="btn-group" role="group">
+                    <input type="date" class="form-control loan_loantimeP">
+                    <span>至</span>
+                    <input type="date" class="form-control loan_loantimeS">
+                </div>
+            </div>
+        </label>
+        <div class="btn-group empname_select" role="group" aria-label="...">
+            <button type="button" class="btn btn-default">  书籍名称：</button>
+            <div class="btn-group" role="group">
+                <input type="text" class="form-control book_name" placeholder="书籍名称"/>
+            </div>
+        </div>
+        <input type="button" name="" id="" value="搜索" th:onclick="selectLoan()" class="btn btn-primary" />
+    </div>
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>书籍名称</th>
+            <th>归还人姓名</th>
+            <th>借出时间</th>
+            <th>归还时间</th>
+            <th>期限</th>
+            <th>联系方式</th>
+            <th>处理人</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody th:class="bookloanList">
+        <tr th:each="bookloana : ${bookloanList}">
+            <td th:text="${bookloana.getLoan_id()}"></td>
+            <td th:text="${bookloana.getBookName()}"></td>
+            <td th:text="${bookloana.getLoan_userName()}"></td>
+            <td th:text="${bookloana.getLoan_loantime()}">2018-01-13</td>
+            <td th:text="${bookloana.getLoan_returntime()}">15875722222</td>
+            <td th:text="${bookloana.getLoan_deadline()+'天'}">15875722222</td>
+            <td th:text="${bookloana.getUser_phone()}">15875722222</td>
+            <td th:text="${bookloana.getLoan_handler()}">15875722222</td>
+            <td th:if="${bookloana.getLoan_state()==0}">借出中</td>
+            <td th:if="${bookloana.getLoan_state()==1}">已归还</td>
+            <td>
+                <a th:if="${bookloana.getLoan_state()!=1}">
+                    <span class="glyphicon glyphicon-ok" title="归还" th:onclick="|return_book(${bookloana.getLoan_id()})|"></span>
+                </a>&nbsp;&nbsp;&nbsp;
+                <span th:if="${bookloana.getLoan_state()==1}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a>
+                    <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" title="修改"></span>
+                </a>&nbsp;&nbsp;&nbsp;
+                <a>
+                    <span class="glyphicon glyphicon-trash" lay-event="del" title="删除"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="paging">
+        <input type="hidden" class="fen_count" th:value="${fenye.getTotalPageCount()}">
+        <input type="hidden" class="fen_PageNo" th:value="${fenye.getCurrentPageNo()}">
+        <ul>
+            <li><a th:onclick="selectLoan(1)">首页</a></li>
+            <li><a th:onclick="|selectLoan(${fenye.getCurrentPageNo()-1})|" style="border-radius: 2px 0 0 2px;">上一页</a></li>
+            <li class="yeshu">
+            </li>
+            <li><a th:onclick="|selectLoan(${fenye.getCurrentPageNo()+1})|" style="border-radius: 0 2px 2px 0;">下一页</a></li>
+            <li><a th:onclick="|selectLoan(${fenye.getTotalPageCount()})|">尾页</a></li>
+        </ul>
+    </div>
+</div>
+
+<script th:src="@{/js/larry.js}"></script>
+<script th:src="@{/js/jquery-1.12.4.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/book.js}"></script>
+</body>
+</html>

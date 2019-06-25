@@ -10,10 +10,7 @@ import org.apache.commons.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.awt.image.ShortInterleavedRaster;
 
@@ -58,7 +55,7 @@ public class ProductController {
             session.setAttribute("message","服务熔断!");
             return "html/Login";
         }else {
-            session.setAttribute("message","登录失败,账号或密码错误!");
+            session.setAttribute("message","登录失败,账号或密码错误!!");
             return "html/Login";
         }
     }
@@ -214,8 +211,18 @@ public class ProductController {
 
     @ResponseBody
     @RequestMapping(value = "deleteEmp")
-    public Object deleteEmp(@RequestParam("emp_id")Integer emp_id){
-        return empService.deleteEmp(emp_id);
+    public Object deleteEmp(@RequestParam("emp_id")Integer emp_id,@RequestParam("empName")String empName){
+        employee employee = empService.getEmpByname(empName);
+        int result = empService.deleteEmp(emp_id);
+        if (result==1) {
+            String filePath = "D:\\ideas\\library\\springcloud-library-product\\src\\main\\resources\\static\\images\\tou\\";
+            filePath = filePath + employee.getImgpath();
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        return result;
     }
 
 
@@ -325,4 +332,197 @@ public class ProductController {
         return "html/book_sell";
     }
 
+    @SuppressWarnings("all")
+    @ResponseBody
+    @RequestMapping(value = "select_book", method = RequestMethod.GET)
+    public Object select_book(book book){
+        int count = bookService.getCount(book.getBook_name(), book.getBook_authod(),book.getBook_damage());
+        fenye fenye = new fenye();
+        fenye.setPageSize(5);
+        fenye.setCurrentPageNo(1);
+        fenye.setTotalCount(count);
+        if(fenye.getCurrentPageNo()>fenye.getTotalPageCount()){
+            fenye.setCurrentPageNo(fenye.getTotalPageCount());
+        }else if(fenye.getCurrentPageNo()<1){
+            fenye.setCurrentPageNo(1);
+        }
+        List<book> bookList = bookService.getBooklist((fenye.getCurrentPageNo()-1)*fenye.getPageSize(),fenye.getPageSize()
+                ,book.getBook_name(), book.getBook_authod(),book.getBook_damage());
+        Map<String, Object> bookMap = new HashMap<>();
+        bookMap.put("bookList",bookList);
+        bookMap.put("fenye",fenye);
+        return bookMap;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "get_book",method = RequestMethod.GET)
+    public Object get_book(@RequestParam(value = "book_id")Integer book_id){
+        book book = bookService.get_book(book_id);
+        if (book==null) {
+            return 0;
+        }
+        return bookService.get_book(book_id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "sellbook",method = RequestMethod.GET)
+    public Object sellbook(@RequestParam(value = "book_name",required = false)String book_name,
+                           @RequestParam(value = "book_authod",required = false)String book_authod,
+                           @RequestParam(value = "book_price",required = false) BigDecimal book_price,
+                           @RequestParam(value = "book_type",required = false)Integer book_type,
+                           @RequestParam(value = "book_id",required = false)Integer book_id,
+                           @RequestParam(value = "handler",required = false)String handler){
+        return bookService.sellbook(book_name, book_authod, book_price, book_type, book_id,handler);
+    }
+
+    @RequestMapping(value = "do_loanBook",method = RequestMethod.GET)
+    public String do_loanBook(){
+        return "html/loan_Book";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "get_loanUser",method = RequestMethod.GET)
+    public Object get_loanUser(@RequestParam(value = "loan_id",required = false)Integer loan_id){
+        user loanUser = empService.get_loanUser(loan_id);
+        if (loanUser==null) {
+            return 0;
+        }
+        return loanUser;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "loan_Book",method = RequestMethod.POST)
+    public Object loan_Book(bookloan bookloan){
+        return bookService.loan_Book(bookloan);
+    }
+
+    @SuppressWarnings("all")
+    @RequestMapping(value = "loanList",method = RequestMethod.GET)
+    public String do_loanList(@RequestParam(value = "pageNo",required = false)Integer pageNo,
+                              @RequestParam(value = "book_name",required = false)String book_name,
+                              @RequestParam(value = "loan_loantimeP",required = false)String loan_loantimeP,
+                              @RequestParam(value = "loan_loantimeS",required = false)String loan_loantimeS,Model model){
+        int Count = bookService.getloanCount(book_name,loan_loantimeP,loan_loantimeS);
+        if (pageNo==null) {
+            pageNo=1;
+        }
+        fenye fenye = new fenye();
+        fenye.setPageSize(5);
+        fenye.setCurrentPageNo(pageNo);
+        fenye.setTotalCount(Count);
+        if(fenye.getCurrentPageNo()>fenye.getTotalPageCount()){
+            fenye.setCurrentPageNo(fenye.getTotalPageCount());
+        }else if(fenye.getCurrentPageNo()<1){
+            fenye.setCurrentPageNo(1);
+        }
+        List<bookloan> bookloanList = bookService.getBookloanList(book_name,loan_loantimeP,loan_loantimeS
+            ,(fenye.getCurrentPageNo()-1)*fenye.getPageSize(),fenye.getPageSize());
+        model.addAttribute("bookloanList",bookloanList);
+        model.addAttribute("fenye",fenye);
+        return "html/loan_List";
+    }
+
+    @SuppressWarnings("all")
+    @ResponseBody
+    @RequestMapping(value = "ajax_loanList",method = RequestMethod.GET)
+    public Object ajax_loanList(@RequestParam(value = "pageNo",required = false)Integer pageNo,
+                              @RequestParam(value = "book_name",required = false)String book_name,
+                              @RequestParam(value = "loan_loantimeP",required = false)String loan_loantimeP,
+                              @RequestParam(value = "loan_loantimeS",required = false)String loan_loantimeS){
+        int Count = bookService.getloanCount(book_name,loan_loantimeP,loan_loantimeS);
+        if (pageNo==null) {
+            pageNo=1;
+        }
+        fenye fenye = new fenye();
+        fenye.setPageSize(5);
+        fenye.setCurrentPageNo(pageNo);
+        fenye.setTotalCount(Count);
+        if(fenye.getCurrentPageNo()>fenye.getTotalPageCount()){
+            fenye.setCurrentPageNo(fenye.getTotalPageCount());
+        }else if(fenye.getCurrentPageNo()<1){
+            fenye.setCurrentPageNo(1);
+        }
+        List<bookloan> bookloanList = bookService.getBookloanList(book_name,loan_loantimeP,loan_loantimeS
+                ,(fenye.getCurrentPageNo()-1)*fenye.getPageSize(),fenye.getPageSize());
+        Map<String, Object> loanMap = new HashMap<>();
+        loanMap.put("bookloanList",bookloanList);
+        loanMap.put("fenye",fenye);
+        return loanMap;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "return_book", method = RequestMethod.GET)
+    public Object return_book(@RequestParam(value = "loan_id",required = false)Integer loan_id){
+        return bookService.return_book(loan_id);
+    }
+
+    @SuppressWarnings("all")
+    @RequestMapping(value = "do_jidu",method = RequestMethod.GET)
+    public String do_jidu(@RequestParam(value = "pageNo",required = false)Integer pageNo,
+                          @RequestParam(value = "pageNos",required = false)Integer pageNos,
+                          @RequestParam(value = "book_name",required = false)String book_name,
+                          @RequestParam(value = "loan_loantimeP",required = false)String loan_loantimeP,
+                          @RequestParam(value = "loan_loantimeS",required = false)String loan_loantimeS,Model model){
+        int Count = bookService.getloanCount(book_name,loan_loantimeP,loan_loantimeS);
+        int sellCount = bookService.getbooksellCount();
+        if (pageNo==null) {
+            pageNo=1;
+        }
+        fenye fenye = new fenye();
+        fenye.setPageSize(5);
+        fenye.setCurrentPageNo(pageNo);
+        fenye.setTotalCount(Count);
+        if(fenye.getCurrentPageNo()>fenye.getTotalPageCount()){
+            fenye.setCurrentPageNo(fenye.getTotalPageCount());
+        }else if(fenye.getCurrentPageNo()<1){
+            fenye.setCurrentPageNo(1);
+        }
+        List<bookloan> bookloanList = bookService.getBookloanList(book_name,loan_loantimeP,loan_loantimeS
+                ,(fenye.getCurrentPageNo()-1)*fenye.getPageSize(),fenye.getPageSize());
+
+        // booksell分页
+        if (pageNos==null) {
+            pageNos=1;
+        }
+        fenye fenyes = new fenye();
+        fenyes.setPageSize(5);
+        fenyes.setCurrentPageNo(pageNos);
+        fenyes.setTotalCount(sellCount);
+        if(fenyes.getCurrentPageNo()>fenyes.getTotalPageCount()){
+            fenyes.setCurrentPageNo(fenyes.getTotalPageCount());
+        }else if(fenyes.getCurrentPageNo()<1){
+            fenyes.setCurrentPageNo(1);
+        }
+        List<booksell> booksell = bookService.getbooksell((fenyes.getCurrentPageNo() - 1) * fenye.getPageSize(), fenyes.getPageSize());
+        model.addAttribute("bookloanList",bookloanList);
+        model.addAttribute("booksell",booksell);
+        model.addAttribute("fenye",fenye);
+        model.addAttribute("fenyes",fenyes);
+        return "html/jidu_List";
+    }
+
+    @SuppressWarnings("all")
+    @RequestMapping(value = "Emp_wage",method = RequestMethod.GET)
+    public String Emp_wage(@RequestParam(value = "entry_starttime",required = false)String entry_starttime
+            ,@RequestParam(value = "entry_prefixtime",required = false)String entry_prefixtime
+            ,@RequestParam(value = "empName",required = false)String empName
+            ,@RequestParam(value = "pageNo", required = false)Integer pageNo
+            ,@RequestParam(value = "emp_id", required = false)Integer emp_id, Model model){
+        int Count = empService.getEmp_wageCount(entry_starttime,entry_prefixtime,empName,emp_id);
+        if (pageNo==null) {
+            pageNo=1;
+        }
+        fenye fenye = new fenye();
+        fenye.setPageSize(5);
+        fenye.setCurrentPageNo(pageNo);
+        fenye.setTotalCount(Count);
+        if(fenye.getCurrentPageNo()>fenye.getTotalPageCount()){
+            fenye.setCurrentPageNo(fenye.getTotalPageCount());
+        }else if(fenye.getCurrentPageNo()<1){
+            fenye.setCurrentPageNo(1);
+        }
+        List<attendance> emp_wageList = empService.getEmp_wage(entry_starttime, entry_prefixtime, empName, emp_id);
+        model.addAttribute("emp_wageList",emp_wageList);
+        return "";
+    }
 }

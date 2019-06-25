@@ -104,31 +104,43 @@
     <div class="container">
         <h1>员工管理</h1>
         <hr>
-        <label>
-            <div class="btn-group" role="group" aria-label="...">
-                <button type="button" class="btn btn-default"> 员工职位：</button>
+        <div class="panel-body form-inline">
+            <label>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default">  入职年月：</button>
+                    <div class="btn-group" role="group">
+                        <input type="date" class="form-control entry_starttime">
+                        <span>至</span>
+                        <input type="date" class="form-control entry_prefixtime">
+                    </div>
+                </div>
+            </label>
+            <label>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default"> 员工职位：</button>
+                    <div class="btn-group" role="group">
+                        <select name="quiz" class="form-control roleID">
+                            <option value="8">请选择</option>
+                            <option value="0">普通员工</option>
+                            <option value="1">清洁工</option>
+                            <option value="2">保安</option>
+                            <option value="3">用户管理员</option>
+                            <option value="4">图书管理员</option>
+                            <option value="5">员工管理员</option>
+                            <option value="6">财务管理员</option>
+                            <option value="7">超级管理员</option>
+                        </select>
+                    </div>
+                </div>
+            </label>
+            <div class="btn-group empname_select" role="group" aria-label="...">
+                <button type="button" class="btn btn-default">  员工姓名：</button>
                 <div class="btn-group" role="group">
-                    <select name="quiz" class="form-control roleID">
-                        <option value="8">请选择</option>
-                        <option value="0">普通员工</option>
-                        <option value="1">清洁工</option>
-                        <option value="2">保安</option>
-                        <option value="3">用户管理员</option>
-                        <option value="4">图书管理员</option>
-                        <option value="5">员工管理员</option>
-                        <option value="6">财务管理员</option>
-                        <option value="7">超级管理员</option>
-                    </select>
+                    <input type="text" class="form-control empNamea" placeholder="员工姓名"/>
                 </div>
             </div>
-        </label>
-        <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">  员工姓名：</button>
-            <div class="btn-group" role="group">
-                <input type="text" class="form-control empNamea" placeholder="员工姓名"/>
-            </div>
+            <input type="button" name="" id="" value="搜索" th:onclick="selectEmp()" class="btn btn-primary" />
         </div>
-        <input type="button" name="" id="" value="搜索" th:onclick="selectEmp()" class="btn btn-primary" />
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>
@@ -143,18 +155,19 @@
             </thead>
             <tbody th:class="employeeLista">
             <tr th:each="employeea : ${employeeList}">
-                <td th:text="${employeea.getEmp_id()}">10011</td>
-                <td th:text="${employeea.getEmp_name()}">程龙飞</td>
-                <td th:text="${employeea.getEmp_role()}">总经理</td>
+                <td th:text="${employeea.getEmp_id()}"></td>
+                <td th:text="${employeea.getEmp_name()}"></td>
+                <td th:text="${employeea.getEmp_role()}"></td>
                 <td th:text="${employeea.getEmp_hiredate()}">2018-01-13</td>
-                <td th:text="${employeea.getEmp_gender()}">男</td>
+                <td th:if="${employeea.getEmp_gender()==0}" th:text="男">男</td>
+                <td th:if="${employeea.getEmp_gender()==1}" th:text="女">女</td>
                 <td th:text="${employeea.getEmp_phone()}">15875722222</td>
                 <td>
                     <a>
                         <span th:onclick="|updateEmp(${employeea.getEmp_id()})|" class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal"></span>
                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a>
-                        <span th:onclick="|deleteEmp(${employeea.getEmp_id()})|" class="glyphicon glyphicon-trash" lay-event="del"></span>
+                        <span th:onclick="deleteEmp([[${employeea.getEmp_id()}]],[[${employeea.getEmp_username()}]])" class="glyphicon glyphicon-trash" lay-event="del"></span>
                     </a>
                 </td>
             </tr>

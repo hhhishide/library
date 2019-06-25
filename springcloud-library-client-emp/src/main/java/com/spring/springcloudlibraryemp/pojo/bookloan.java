@@ -1,7 +1,6 @@
 package com.spring.springcloudlibraryemp.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 书籍借出归还记录类
@@ -10,14 +9,34 @@ public class bookloan {
     private int loan_id;
     private int loan_bookid;
     private int loan_userid;
-    private Date loan_loantime;
-    private Date loan_returntime;
-    private Date loan_deadline;
+    private String loan_userName;
+    private String bookName;
+    private String loan_loantime;
+    private String loan_returntime;
+    private Integer loan_deadline;
     private BigDecimal loan_money;
-    private int loan_handler;
+    private String loan_handler;
     private int loan_frontdamage;
     private int loan_returndamage;
     private BigDecimal loan_penalty;
+    private String user_phone;
+    private int loan_state;
+
+    public int getLoan_state() {
+        return loan_state;
+    }
+
+    public void setLoan_state(int loan_state) {
+        this.loan_state = loan_state;
+    }
+
+    public String getUser_phone() {
+        return user_phone;
+    }
+
+    public void setUser_phone(String user_phone) {
+        this.user_phone = user_phone;
+    }
 
     public int getLoan_id() {
         return loan_id;
@@ -43,27 +62,43 @@ public class bookloan {
         this.loan_userid = loan_userid;
     }
 
-    public Date getLoan_loantime() {
+    public String getLoan_userName() {
+        return loan_userName;
+    }
+
+    public void setLoan_userName(String loan_userName) {
+        this.loan_userName = loan_userName;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getLoan_loantime() {
         return loan_loantime;
     }
 
-    public void setLoan_loantime(Date loan_loantime) {
+    public void setLoan_loantime(String loan_loantime) {
         this.loan_loantime = loan_loantime;
     }
 
-    public Date getLoan_returntime() {
+    public String getLoan_returntime() {
         return loan_returntime;
     }
 
-    public void setLoan_returntime(Date loan_returntime) {
+    public void setLoan_returntime(String loan_returntime) {
         this.loan_returntime = loan_returntime;
     }
 
-    public Date getLoan_deadline() {
+    public Integer getLoan_deadline() {
         return loan_deadline;
     }
 
-    public void setLoan_deadline(Date loan_deadline) {
+    public void setLoan_deadline(Integer loan_deadline) {
         this.loan_deadline = loan_deadline;
     }
 
@@ -75,11 +110,11 @@ public class bookloan {
         this.loan_money = loan_money;
     }
 
-    public int getLoan_handler() {
+    public String getLoan_handler() {
         return loan_handler;
     }
 
-    public void setLoan_handler(int loan_handler) {
+    public void setLoan_handler(String loan_handler) {
         this.loan_handler = loan_handler;
     }
 

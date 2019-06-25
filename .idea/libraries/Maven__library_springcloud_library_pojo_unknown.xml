@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: library:springcloud-library-pojo:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/library/springcloud-library-pojo/unknown/springcloud-library-pojo-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/library/springcloud-library-pojo/unknown/springcloud-library-pojo-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/library/springcloud-library-pojo/unknown/springcloud-library-pojo-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

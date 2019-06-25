@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springcloud-euerka-7001" />
+        <module name="springcloud-euerka-7002" />
+        <module name="springcloud-library-client-book" />
+        <module name="springcloud-library-client-emp" />
+        <module name="springcloud-library-client-records" />
+        <module name="springcloud-library-finance" />
+        <module name="springcloud-library-notice" />
+        <module name="springcloud-library-product" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="pojo" target="1.8" />
+      <module name="springcloud-euerka-7001" target="1.8" />
+      <module name="springcloud-euerka-7002" target="1.8" />
+      <module name="springcloud-library-client-book" target="1.8" />
+      <module name="springcloud-library-client-emp" target="1.8" />
+      <module name="springcloud-library-client-records" target="1.8" />
+      <module name="springcloud-library-finance" target="1.8" />
+      <module name="springcloud-library-notice" target="1.8" />
+      <module name="springcloud-library-pojo" target="1.8" />
+      <module name="springcloud-library-product" target="1.8" />
+      <module name="webservice" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="pojo" options="-parameters" />
+      <module name="springcloud-euerka-7001" options="-parameters" />
+      <module name="springcloud-euerka-7002" options="-parameters" />
+      <module name="springcloud-library-client-book" options="-parameters" />
+      <module name="springcloud-library-client-emp" options="-parameters" />
+      <module name="springcloud-library-client-records" options="-parameters" />
+      <module name="springcloud-library-finance" options="-parameters" />
+      <module name="springcloud-library-notice" options="-parameters" />
+      <module name="springcloud-library-product" options="-parameters" />
+    </option>
+  </component>
+</project>

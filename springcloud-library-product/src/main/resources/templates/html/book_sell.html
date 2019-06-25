@@ -4,11 +4,64 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script th:src="@{/js/jquery-1.12.4.js}"></script>
-    <script th:src="@{https://code.highcharts.com/highcharts.js}"></script>
-    <script th:src="@{https://code.highcharts.com/highcharts-3d.js}"></script>
+    <script th:src="@{/js/book.js}"></script>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 </head>
+<style>
+    .book_sellContent{
+        border: 1px solid #d4d4d4;
+        text-align: center;
+        margin: 50px 50px 40px 50px;
+        padding: 30px 40px 20px 40px;
+    }
+</style>
 <body>
-<div id="container" style="width: 550px; height: 400px; margin: 0 auto;"></div>
-<button th:onclick="bingtu()">饼图</button>
+<h1 style="text-align: center;margin-top: 20px;margin-bottom: -30px;">书籍出售</h1>
+<div th:class="book_sellContent">
+    <div style="margin: 0 auto;display: inline-block;">
+        <form class="layui-form layui-form-pane"  method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">书籍编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input book_id" name="book_id" lay-verify="required" placeholder="请输入编号" autocomplete="off" th:onblur="get_book()">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">书名</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input book_name" name="book_name" lay-verify="required" disabled="disabled"  autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input book_authod" name="book_authod" lay-verify="required" disabled="disabled"  autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" class="layui-input book_price" name="book_price" placeholder="￥" disabled="disabled" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" class="layui-input book_type" name="book_type" lay-verify="required" disabled="disabled" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">处理人</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" class="layui-input handler" name="handler" lay-verify="required" th:value="${session.USER.getEmp_name()}" disabled="disabled" autocomplete="off">
+                </div>
+            </div>
+            <span class="layui-btn" th:onclick="book_sell()">&nbsp;提&nbsp;交&nbsp;信&nbsp;息&nbsp;</span>
+            <input type="hidden" th:value="${session.USER.getEmp_username()}" name="uname">
+        </form>
+    </div>
+</div>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script th:src="@{/js/larry.js}"></script>
 </body>
 </html>

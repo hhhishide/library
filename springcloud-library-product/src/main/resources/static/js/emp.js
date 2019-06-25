@@ -18,6 +18,11 @@ function selectEmp(pageNo) {
         success:function (data) {
             $(".employeeLista").html("");
             for (var i = 0; i < data.employeeList.length; i++){
+                if (data.employeeList[i].emp_gender==0 || data.employeeList[i].emp_gender=="0"){
+                    data.employeeList[i].emp_gender="男";
+                } else{
+                    data.employeeList[i].emp_gender="女";
+                }
                 $(".employeeLista").append("<tr>" +
                     "<td>"+data.employeeList[i].emp_id+"</td>"+
                     "<td>"+data.employeeList[i].emp_name+"</td>"+
@@ -27,12 +32,12 @@ function selectEmp(pageNo) {
                     "<td>"+data.employeeList[i].emp_phone+"</td>"+
                     "<td><a><span onclick='updateEmp("+data.employeeList[i].emp_id+")' class=\"glyphicon glyphicon-pencil\" data-toggle=\"modal\" " +
                     "data-target=\"#myModal\"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a>" +
-                    "<span onclick='deleteEmp("+data.employeeList[i].emp_id+")' class=\"glyphicon glyphicon-trash\" lay-event=\"del\"></span></a></td>"+
+                    "<span onclick='deleteEmp("+data.employeeList[i].emp_id+","+"\""+data.employeeList[i].emp_username+"\""+")' class=\"glyphicon glyphicon-trash\" lay-event=\"del\"></span></a></td>"+
                     "</tr>");
             }
             $(".fen_count").val(data.fenye.totalPageCount);
             $(".fen_PageNo").val(data.fenye.currentPageNo);
-            fenye();
+            emp_fenye();
         }
     });
 }
@@ -41,19 +46,35 @@ function updateEmp(emp_id) {
     alert("修改"+emp_id+"号员工");
 }
 
-function deleteEmp(emp_id) {
-    $.ajax({
-        url: "/library/deleteEmp",
-        type: "GET",
-        data:{emp_id:emp_id},
-        dataType:"json",
-        success:function (data) {
-            if (data=="1" || data ==1){
-                layer.alert('删除成功!', {icon: 1});
-                selectEmp(1);
-            }else{
-                layer.msg('删除失败!', {icon: 5});
-            }
+function deleteEmp(emp_id, emp_uname) {
+    //eg2
+    layer.open({
+        content: '你确定要删除员工'+emp_uname+"吗?"
+        ,btn: ['确定', '取消']
+        ,yes: function(index, layero){
+            $.ajax({
+                url: "/library/deleteEmp",
+                type: "GET",
+                data:{emp_id:emp_id,empName:emp_uname},
+                dataType:"json",
+                success:function (data) {
+                    if (data=="1" || data ==1){
+                        layer.msg('删除成功!', {icon: 1});
+                        selectEmp(1);
+                    }else{
+                        layer.msg('删除失败!', {icon: 5});
+                    }
+                }
+            });
+        }
+        ,btn2: function(index, layero){
+            //按钮【按钮二】的回调
+            //return false 开启该代码可禁止点击该按钮关闭
+        }
+        ,cancel: function(){
+            //右上角关闭回调
+
+            //return false 开启该代码可禁止点击该按钮关闭
         }
     });
 }

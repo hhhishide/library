@@ -44,7 +44,7 @@
     </select>
 
     <update id="daka">
-        <if test="hour&lt;=12">
+        <if test="hour&lt;12">
             UPDATE
                   `attendance`
             SET
@@ -52,7 +52,7 @@
             WHERE
                   `userid`=#{empid} AND `Ondate`=#{datetime}
         </if>
-        <if test="hour&gt;12">
+        <if test="hour&gt;=12">
             UPDATE
                   `attendance`
             SET
@@ -92,12 +92,6 @@
     </insert>
     <select id="isdaka" resultType="int">
         SELECT COUNT(*) FROM `attendance` WHERE `userid`=#{empid} AND `Ondate`=#{datetime}
-        <if test="timeas&lt;12">
-            AND `morning_state`=1
-        </if>
-        <if test="timeas&gt;=12">
-            AND `evening_state`=1
-        </if>
     </select>
 
     <insert id="addleave" parameterType="leave">
@@ -179,5 +173,34 @@
     </select>
     <select id="endaka" resultType="string">
         SELECT `evening_time` FROM `attendance` WHERE `Ondate`=#{datetime} AND `userid`=#{empid}
+    </select>
+
+    <select id="get_loanUser" resultType="user">
+        SELECT * FROM `user` WHERE `user_id`=#{loan_id}
+    </select>
+    <select id="getEmp_wageCount" resultType="int">
+        SELECT COUNT(*) FROM `attendance` a,`employee` e
+        <where>
+            a.`userid`=e.`emp_id`
+          <if test="entry_starttime!=null and entry_prefixtime!=null">
+             AND DATE_FORMAT(e.`emp_hiredate`,"%Y-%m-%d") BETWEEN #{entry_starttime} AND #{entry_prefixtime}
+          </if>
+          <if test="empName!=null and empName!=''">
+             AND LIKE CONCAT("%",#{empName},"%")
+          </if>
+        </where>
+    </select>
+
+    <select id="getEmp_wage" resultType="attendance">
+        SELECT a.*,e.`emp_name`,e.`emp_wage` FROM `attendance` a,`employee` e
+        <where>
+            a.`userid`=e.`emp_id`
+            <if test="entry_starttime!=null and entry_prefixtime!=null">
+                AND DATE_FORMAT(e.`emp_hiredate`,"%Y-%m-%d") BETWEEN #{entry_starttime} AND #{entry_prefixtime}
+            </if>
+            <if test="empName!=null and empName!=''">
+                AND LIKE CONCAT("%",#{empName},"%")
+            </if>
+        </where>
     </select>
 </mapper>

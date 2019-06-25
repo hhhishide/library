@@ -289,6 +289,9 @@
     </style>
 </head>
 <body>
+<div style="margin-top: 22px;border-radius: 4px;padding: 6px 6px 6px 6px;width: 100%;background-color: #e2e2e2;font-weight: 600;">
+    <span class="glyphicon glyphicon-home"></span><span>&nbsp;后台管理&nbsp;&nbsp;/&nbsp;&nbsp;个人信息</span>
+</div>
 <h1>个人信息管理</h1>
 <button class="layui-btn daka" th:onclick="daka()">打卡</button>
 <hr>
@@ -511,13 +514,14 @@
                                     <td th:text="${attendancea.getUserid()}"></td>
                                     <td th:text="${employeea.getEmp_name()}"></td>
                                     <td th:if="${attendancea.getMorning_time()!=null}" th:text="${attendancea.getMorning_time()}"></td>
-                                    <td th:if="${attendancea.getMorning_time()==null}" th:text="无"></td>
+                                    <td th:if="${attendancea.getMorning_time()==null}" th:text="未打卡"></td>
                                     <td th:if="${attendancea.getMorning_state()==null}" th:text="未打卡"></td>
                                     <td th:if="${attendancea.getMorning_state()==0}" th:text="正常"></td>
                                     <td th:if="${attendancea.getMorning_state()==1}" th:text="迟到"></td>
+                                    <td th:if="${attendancea.getMorning_state()==2}" th:text="未打卡"></td>
                                     <td th:if="${attendancea.getEvening_time()!=null}" th:text="${attendancea.getEvening_time()}"></td>
                                     <td th:if="${attendancea.getEvening_time()==null}" th:text="无"></td>
-                                    <td th:if="${attendancea.getEvening_state()==null}" th:text="未打卡"></td>
+                                    <td th:if="${attendancea.getEvening_state()==2}" th:text="未打卡"></td>
                                     <td th:if="${attendancea.getEvening_state()==0}" th:text="正常"></td>
                                     <td th:if="${attendancea.getEvening_state()==1}" th:text="早退"></td>
                                     <td th:text="${attendancea.getOndate()}"></td>

@@ -11,6 +11,7 @@ import com.spring.springcloudlibraryproduct.pojo.employee;
 import com.spring.springcloudlibraryproduct.pojo.face;
 import com.spring.springcloudlibraryproduct.pojo.notice;
 import com.spring.springcloudlibraryproduct.pojo.records;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -19,11 +20,9 @@ import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sound.midi.Soundbank;
 import javax.websocket.OnClose;
@@ -77,6 +76,9 @@ public class WebSocketController {
 
     private static List<Object> userList = new ArrayList<>();
 
+    private static Map<String, Object> stompClient_Map01 = new HashMap<>();
+    private static Map<String, Object> stompClient_Map02 = new HashMap<>();
+    private static Map<String, Object> stompClient_Map03 = new HashMap<>();
     //发送页面
     @GetMapping("/send")
     public String send(){
@@ -95,8 +97,66 @@ public class WebSocketController {
         return "html/receive-user";
     }
     @GetMapping("/liaotian")
-    public String liaotian(){
+    public String liaotian(@RequestParam(value = "empName",required = false)String empName, HttpServletRequest request){
         return "html/liaotian";
+    }
+
+    /**
+     * 分别把stomp连接保存到对应map中
+     * @param stompClient01
+     * @param stompClient02
+     * @param stompClient03
+     * @param empName
+     * @return
+     */
+    @SuppressWarnings("all")
+    @ResponseBody
+    @RequestMapping(value = "/save_session",method = RequestMethod.POST)
+    public Object save_Session(@RequestParam(value = "stompClient01",required = false)String stompClient01,
+                               @RequestParam(value = "stompClient02",required = false)String stompClient02,
+                               @RequestParam(value = "stompClient03",required = false)String stompClient03,
+                               @RequestParam(value = "empName")String empName){
+        if (stompClient01!=null) {
+            System.out.println("得到stompClient01:"+JSON.parseObject(stompClient01));
+            stompClient_Map01.put(empName, JSON.parseObject(stompClient01));
+            return stompClient_Map01.get(empName);
+        }
+        if (stompClient02!=null) {
+            System.out.println("得到stompClient02:"+JSON.parseObject(stompClient02));
+            stompClient_Map02.put(empName, JSON.parseObject(stompClient02));
+            return stompClient_Map02.get(empName);
+        }
+        if (stompClient03!=null) {
+            System.out.println("得到stompClient03:"+JSON.parseObject(stompClient03));
+            stompClient_Map03.put(empName, JSON.parseObject(stompClient03));
+            return stompClient_Map03.get(empName);
+        }
+        // 如果所有连接都为空，就说明不是创建连接时创建的方法，返回全部连接
+        List<Map<String, Object>> stompClientList = new ArrayList<>();
+        stompClientList.add(stompClient_Map01);
+        stompClientList.add(stompClient_Map02);
+        stompClientList.add(stompClient_Map03);
+        return stompClientList;
+    }
+
+    @SuppressWarnings("all")
+    @ResponseBody
+    @RequestMapping(value = "/get_session")
+    public Object get_session(@RequestParam(value = "empName")String empName){
+        List<Object> stompClientList = new ArrayList<>();
+        stompClientList.add(stompClient_Map01.get(empName));
+        stompClientList.add(stompClient_Map02.get(empName));
+        stompClientList.add(stompClient_Map03.get(empName));
+        System.out.println("stompClientList.get:"+stompClient_Map01.get(empName));
+        System.out.println("stompClientList.get:"+stompClient_Map02.get(empName));
+        System.out.println("stompClientList.get:"+stompClient_Map03.get(empName));
+        return stompClientList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "get_userList")
+    public Object get_userList(){
+        return userList;
     }
 
     // 定义消息请求路径
@@ -185,6 +245,7 @@ public class WebSocketController {
         return records;
     }
 
+    @SuppressWarnings("all")
     @MessageMapping("/connect")
     @SendTo("/sub/conaa")
     public synchronized Object Connect(Principal principal,String value){
@@ -210,9 +271,14 @@ public class WebSocketController {
         for (SimpUser simpUser:simpUserRegistry.getUsers()) {
             System.out.println("用户:"+simpUser.getSessions());
         }
+        System.out.println("当前在线用户:");
+        for (Object object:userList) {
+            System.out.println(((employee)object).getEmp_username());
+        }
         return messageMap;
     }
 
+    @SuppressWarnings("all")
     @MessageMapping("/disConnect")
     @SendTo("/sub/conaa")
     public synchronized Object disConnect(Principal principal, String value){
@@ -222,16 +288,20 @@ public class WebSocketController {
         // END
         Map<String, Object> messageMap = new HashMap<>();
         System.out.println("当前用户:"+value);
-        subOnlineCount();
-        String message = value + "退出群聊!当前在线人数:"+getOnlineCount();
         for(int i = 0; i< userList.size(); i++){
             if(((employee)userList.get(i)).getEmp_username().equals(value)){
                 userList.remove(i);
+                subOnlineCount();
             }
         }
         for (SimpUser simpUser:simpUserRegistry.getUsers()) {
             System.out.println("用户:"+simpUser.getSessions());
         }
+        System.out.println("当前在线用户:");
+        for (Object object:userList) {
+            System.out.println(((employee)object).getEmp_username());
+        }
+        String message = value + "退出群聊!当前在线人数:"+getOnlineCount();
         messageMap.put("numbera", getOnlineCount());
         messageMap.put("srcUser", value);
         messageMap.put("state","1");

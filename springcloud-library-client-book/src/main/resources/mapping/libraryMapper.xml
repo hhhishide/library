@@ -39,4 +39,65 @@
         VALUES
             (#{book_name},#{book_authod},#{book_price},#{book_type},0)
     </insert>
+
+    <select id="get_book" resultType="book">
+        SELECT * FROM `book` WHERE `book_id`=#{book_id}
+    </select>
+
+    <delete id="sellbook">
+        DELETE FROM `book` WHERE `book_id`=#{book_id}
+    </delete>
+
+    <insert id="addsell">
+        INSERT INTO `booksell`(`book_name`,`book_type`,`authod`,`sell_time`,`price`,`handler`)VALUES(#{book_name},#{book_type},#{book_authod},NOW(),#{book_price},#{handler})
+    </insert>
+
+    <insert id="loan_Book" parameterType="bookloan">
+      INSERT INTO `bookloan`
+            (`loan_bookid`,`loan_userid`,`loan_loantime`,`loan_returntime`,`loan_deadline`,`loan_handler`,`loan_userName`,`bookName`)
+      VALUES
+            (#{loan_bookid},#{loan_userid},#{loan_loantime},#{loan_returntime},#{loan_deadline},#{loan_handler},#{loan_userName},#{bookName})
+    </insert>
+
+    <select id="getloanCount" resultType="int">
+      SELECT COUNT(*) FROM `bookloan`
+      <where>
+       1=1
+       <if test="book_name!='' and book_name!=null">
+          AND `bookName` LIKE CONCAT("%",#{book_name},"%")
+       </if>
+
+       <if test="loan_loantimeP!='' and loan_loantimeP!=null and loan_loantimeS!='' and loan_loantimeS!=null">
+          AND DATE_FORMAT(`loan_loantime`,"%Y-%m-%d") BETWEEN #{loan_loantimeP} AND #{loan_loantimeS}
+       </if>
+
+      </where>
+    </select>
+
+    <select id="getBookloanList" resultType="bookloan">
+        SELECT b.*,u.`user_phone` FROM `bookloan` b,`user` u
+        <where>
+            1=1
+            <if test="book_name!='' and book_name!=null">
+                AND `bookName` LIKE CONCAT("%",#{book_name},"%")
+            </if>
+
+            <if test="loan_loantimeP!='' and loan_loantimeP!=null and loan_loantimeS!='' and loan_loantimeS!=null">
+                AND DATE_FORMAT(`loan_loantime`,"%Y-%m-%d") BETWEEN #{loan_loantimeP} AND #{loan_loantimeS}
+            </if>
+        </where>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <update id="return_book">
+        UPDATE `bookloan` SET `loan_state`=1 WHERE `loan_id`=#{loan_id}
+    </update>
+
+    <select id="getbooksell" resultType="booksell">
+        SELECT * FROM `booksell` LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getbooksellCount" resultType="int">
+        SELECT COUNT(*) FROM `booksell`
+    </select>
 </mapper>
